@@ -1,0 +1,5 @@
+rootProject.name = 'multi-tenancy-spring-boot-starter'
+
+include("starter")
+include("example")
+include("dependencies")

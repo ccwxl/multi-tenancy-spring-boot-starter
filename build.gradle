@@ -1,0 +1,6 @@
+allprojects {
+    group = 'cc.sofast.infrastructure'
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 0, "minutes"
+    }
+}

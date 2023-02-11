@@ -1,0 +1,44 @@
+plugins {
+    id 'sofast.module.plugin'
+}
+
+processAot {
+    enabled(false)
+}
+
+processTestAot {
+    enabled(false)
+}
+
+bootJar {
+    enabled(false)
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.springframework.boot:spring-boot-starter-jdbc'
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-redis'
+    compileOnly 'p6spy:p6spy'
+    compileOnly 'io.seata:seata-rm-datasource'
+    compileOnly 'io.github.openfeign:feign-core'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    testImplementation 'com.baomidou:dynamic-datasource-spring-boot-starter:3.6.1'
+    testImplementation 'org.postgresql:postgresql'
+}
+
+tasks.named('test') {
+    //enabled(false)
+    useJUnitPlatform()
+    jvmArgs ["--add-opens java.base/java.lang=ALL-UNNAMED"]
+}

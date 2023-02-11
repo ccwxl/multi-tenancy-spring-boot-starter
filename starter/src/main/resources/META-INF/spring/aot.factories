@@ -1,0 +1,1 @@
+org.springframework.aot.hint.RuntimeHintsRegistrar=cc.sofast.infrastructure.tenant.aot.TenantStarterRuntimeHints

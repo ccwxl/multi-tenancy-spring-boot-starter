@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    tenant:
+      enabled: true
+      datasource:
+        shared:
+          pool-name: pool
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://localhost:5432/postgres
+          username: apple
+          password: apple
+          shared: true
+          tenants:
+            - t1
+            - t2
+          hikari:
+            maximum-pool-size: 10
