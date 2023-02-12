@@ -1,5 +1,7 @@
 plugins {
     id 'sofast.module.plugin'
+    id 'maven-publish'
+    id 'signing'
 }
 
 processAot {
@@ -38,7 +40,72 @@ dependencies {
 }
 
 tasks.named('test') {
-    //enabled(false)
+    enabled(false)
     useJUnitPlatform()
-    jvmArgs ["--add-opens java.base/java.lang=ALL-UNNAMED"]
+    jvmArgs["--add-opens java.base/java.lang=ALL-UNNAMED"]
+}
+
+java {
+    archivesBaseName = "multi-tenancy-spring-boot-starter"
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    options.addStringOption("charset", "UTF-8")
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            group = 'cc.sofast.infrastructure'
+            artifactId = 'multi-tenancy-spring-boot-starter'
+            version = '0.0.1'
+            from components.java
+            pom {
+                name = 'multi-tenancy-spring-boot-starter'
+                description = 'spring boot starter for multi-tenancy'
+                url = 'https://github.com/siaron/multi-tenancy-spring-boot-starter'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'https://github.com/siaron'
+                        name = 'siaron'
+                        email = 'siaron.wang@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'git@github.com:siaron/multi-tenancy-spring-boot-starter.git'
+                    developerConnection = 'scm:git:ssh://github.com/path/to/repo.git'
+                    url = 'https://github.com/siaron/multi-tenancy-spring-boot-starter'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "OSSRH"
+            if (project.version.toString().endsWith("-SNAPSHOT")) {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots"
+            } else {
+                url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            }
+            credentials {
+                username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+                password = findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications.mavenJava)
 }

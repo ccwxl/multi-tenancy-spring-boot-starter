@@ -16,22 +16,19 @@ import java.io.IOException;
  */
 public class RestTemplateTenantPropagationInterceptor implements ClientHttpRequestInterceptor {
 
-    private final TenantDataSourceProperties properties;
+    private final PropagationProperties properties;
 
-    public RestTemplateTenantPropagationInterceptor(TenantDataSourceProperties properties) {
+    public RestTemplateTenantPropagationInterceptor(PropagationProperties properties) {
         this.properties = properties;
     }
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         HttpRequestWrapper requestWrapper = new HttpRequestWrapper(request);
-
         String tenant = TenantContextHolder.peek();
-
         if (StringUtils.hasLength(tenant)) {
-            requestWrapper.getHeaders().add(properties.getIdentification(), tenant);
+            requestWrapper.getHeaders().add(properties.getId(), tenant);
         }
-
         return execution.execute(requestWrapper, body);
     }
 }

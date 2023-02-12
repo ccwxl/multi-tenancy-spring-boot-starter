@@ -1,0 +1,10 @@
+### Send POST request with json body for tenant t1
+POST http://localhost:8080/account
+Content-Type: application/json
+X-Teant: t1
+
+{
+  "nickname": "小明",
+  "age": 12,
+  "address": "北京市"
+}

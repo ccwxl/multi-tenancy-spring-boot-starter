@@ -1,9 +1,8 @@
-package cc.sofast.infrastructure.tenant.webfilter;
+package cc.sofast.infrastructure.tenant.resolver.webfilter;
 
-import cc.sofast.infrastructure.tenant.datasource.TenantDataSourceProperties;
 import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
 import cc.sofast.infrastructure.tenant.resolver.http.HttpRequestTenantResolver;
-import cc.sofast.infrastructure.tenant.webfilter.match.TenantRequestMatcher;
+import cc.sofast.infrastructure.tenant.resolver.webfilter.match.TenantRequestMatcher;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,14 +23,11 @@ public class TenantFilter extends OncePerRequestFilter implements Ordered {
     private static final Logger log = LoggerFactory.getLogger(TenantFilter.class);
 
     private final TenantRequestMatcher requestMatcher;
-    private final TenantDataSourceProperties properties;
     private final HttpRequestTenantResolver resolver;
 
     public TenantFilter(TenantRequestMatcher requestMatcher,
-                        TenantDataSourceProperties properties,
                         HttpRequestTenantResolver resolver) {
         this.requestMatcher = requestMatcher;
-        this.properties = properties;
         this.resolver = resolver;
     }
 

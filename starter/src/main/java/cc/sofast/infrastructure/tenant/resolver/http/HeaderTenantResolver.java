@@ -1,8 +1,8 @@
 package cc.sofast.infrastructure.tenant.resolver.http;
 
-import cc.sofast.infrastructure.tenant.datasource.TenantDataSourceProperties;
 import cc.sofast.infrastructure.tenant.exception.TenantNotFoundException;
 import cc.sofast.infrastructure.tenant.resolver.TenantResolver;
+import cc.sofast.infrastructure.tenant.resolver.TenantResolverProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
@@ -13,17 +13,18 @@ import java.io.Serializable;
 
 public class HeaderTenantResolver implements HttpRequestTenantResolver, TenantResolver {
 
-    private final TenantDataSourceProperties properties;
+    private final TenantResolverProperties properties;
 
-    public HeaderTenantResolver(TenantDataSourceProperties properties) {
+    public HeaderTenantResolver(TenantResolverProperties properties) {
         this.properties = properties;
     }
 
     @Override
     public Serializable resolveTenantIdentifier(HttpServletRequest request) throws TenantNotFoundException {
-        String tenant = request.getHeader(properties.getIdentification());
+        String id = properties.getWeb().getId();
+        String tenant = request.getHeader(id);
         if (!StringUtils.hasLength(tenant)) {
-            throw new TenantNotFoundException("Tenant not resolver in header " + properties.getIdentification() + " value is null");
+            throw new TenantNotFoundException("Tenant not resolver in header " + id + " value is null");
         }
         return tenant;
     }
@@ -35,6 +36,6 @@ public class HeaderTenantResolver implements HttpRequestTenantResolver, TenantRe
             HttpServletRequest request = servletRequestAttributes.getRequest();
             return resolveTenantIdentifier(request);
         }
-        throw new TenantNotFoundException("Tenant not resolver in header " + properties.getIdentification() + " value is null");
+        throw new TenantNotFoundException("Tenant not resolver in header " + properties.getWeb().getId() + " value is null");
     }
 }

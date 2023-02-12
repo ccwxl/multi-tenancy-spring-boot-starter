@@ -1,21 +1,23 @@
 plugins {
-	id 'java-platform'
+    id 'java-platform'
 }
 
 javaPlatform {
-	allowDependencies()
+    allowDependencies()
 }
 
 ext {
-	p6spyVersion = '3.9.1'
-	seataVersion = '1.6.1'
-	feignVersion = '12.1'
+    p6spyVersion = '3.9.1'
+    seataVersion = '1.6.1'
+    feignVersion = '12.1'
+    mybatisPlusVersion = '3.5.3.1'
 }
 
 dependencies {
-	constraints {
-		api "p6spy:p6spy:$p6spyVersion"
-		api "io.seata:seata-rm-datasource:$seataVersion"
-		api "io.github.openfeign:feign-core:$feignVersion"
-	}
+    constraints {
+        api "p6spy:p6spy:$p6spyVersion"
+        api "io.seata:seata-rm-datasource:$seataVersion"
+        api "io.github.openfeign:feign-core:$feignVersion"
+        api "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+    }
 }

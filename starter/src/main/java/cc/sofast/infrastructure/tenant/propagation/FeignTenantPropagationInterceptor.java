@@ -10,9 +10,9 @@ import org.springframework.util.StringUtils;
  * @author apple
  */
 public class FeignTenantPropagationInterceptor implements RequestInterceptor {
-    private final TenantDataSourceProperties properties;
+    private final PropagationProperties properties;
 
-    public FeignTenantPropagationInterceptor(TenantDataSourceProperties properties) {
+    public FeignTenantPropagationInterceptor(PropagationProperties properties) {
         this.properties = properties;
     }
 
@@ -20,7 +20,7 @@ public class FeignTenantPropagationInterceptor implements RequestInterceptor {
     public void apply(RequestTemplate template) {
         String tenant = TenantContextHolder.peek();
         if (StringUtils.hasLength(tenant)) {
-            template.header(properties.getIdentification(), tenant);
+            template.header(properties.getId(), tenant);
         }
     }
 }

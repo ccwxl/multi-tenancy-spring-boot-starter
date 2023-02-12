@@ -20,10 +20,6 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin;
 
 public class SofastModulePlugin implements Plugin<Project> {
 
-    public static final String SBV = "3.0.2";
-
-    public static final String SCV = "2022.0.1";
-
     private static final String STAGE = "stage";
 
     private static final String PROD = "prod";
@@ -33,10 +29,6 @@ public class SofastModulePlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         System.out.println("Sofast Dependency Manager plugin.");
-
-        //通用属性
-        project.getExtensions().add("springBootVersion", SBV);
-        project.getExtensions().add("springCloudVersion", SCV);
 
         //java 插件
         project.getPlugins().apply(JavaPlugin.class);

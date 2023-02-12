@@ -1,4 +1,4 @@
-package cc.sofast.infrastructure.tenant.webfilter.match;
+package cc.sofast.infrastructure.tenant.resolver.webfilter.match;
 
 import jakarta.servlet.http.HttpServletRequest;
 

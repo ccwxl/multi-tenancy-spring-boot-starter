@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cc.sofast.infrastructure.tenant.autoconfigure.TenantAutoconfiguration
+cc.sofast.infrastructure.tenant.autoconfigure.TenantAutoconfiguration,\
+cc.sofast.infrastructure.tenant.redis.TenantRedisConfiguration

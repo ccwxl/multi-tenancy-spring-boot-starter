@@ -18,10 +18,6 @@ public class TenantDataSourceProperties {
      */
     private String primary = "def";
 
-    /**
-     * 识别码
-     */
-    private String identification;
 
     /**
      * 是否开启多租户模式
@@ -47,14 +43,6 @@ public class TenantDataSourceProperties {
 
     public void setDatasource(Map<String, DataSourceProperty> datasource) {
         this.datasource = datasource;
-    }
-
-    public String getIdentification() {
-        return identification;
-    }
-
-    public void setIdentification(String identification) {
-        this.identification = identification;
     }
 
     public boolean isEnabled() {

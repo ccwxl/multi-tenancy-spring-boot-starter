@@ -7,12 +7,33 @@ spring:
           pool-name: pool
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://localhost:5432/postgres
-          username: apple
-          password: apple
+          url: jdbc:postgresql://127.0.0.1:5432/saas_shared_db
+          username: share_user
+          password: share_user
           shared: true
           tenants:
             - t1
             - t2
           hikari:
             maximum-pool-size: 10
+        t3:
+          pool-name: pool
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://127.0.0.1:5432/t3
+          username: t3
+          password: t3
+          shared: false
+          hikari:
+            maximum-pool-size: 10
+  data:
+    redis:
+      host: 127.0.0.1
+      password: redis
+  cache:
+    type: redis
+
+
+mybatis-plus:
+  global-config:
+    banner: false

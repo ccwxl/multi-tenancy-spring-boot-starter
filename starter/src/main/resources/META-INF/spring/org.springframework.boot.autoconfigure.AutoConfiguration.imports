@@ -1,1 +1,2 @@
 cc.sofast.infrastructure.tenant.autoconfigure.TenantAutoconfiguration
+cc.sofast.infrastructure.tenant.redis.TenantRedisConfiguration
