@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author apple
  */
-public class RequestPathTenantResolver implements HttpRequestTenantResolver, TenantResolver {
+public class RequestPathTenantResolver implements HttpRequestTenantResolver {
 
     @Override
     public Serializable resolveTenantIdentifier() throws TenantNotFoundException {

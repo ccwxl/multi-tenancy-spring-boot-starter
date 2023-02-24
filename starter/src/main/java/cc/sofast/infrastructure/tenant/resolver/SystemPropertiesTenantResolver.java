@@ -9,9 +9,15 @@ import java.io.Serializable;
  */
 public class SystemPropertiesTenantResolver implements TenantResolver {
 
+    private final TenantResolverProperties tenantResolverProperties;
+
+    public SystemPropertiesTenantResolver(TenantResolverProperties tenantResolverProperties) {
+        this.tenantResolverProperties = tenantResolverProperties;
+    }
+
     @Override
     public Serializable resolveTenantIdentifier() throws TenantNotFoundException {
 
-        return null;
+        return System.getProperty(tenantResolverProperties.getSystem().getId(), "default");
     }
 }

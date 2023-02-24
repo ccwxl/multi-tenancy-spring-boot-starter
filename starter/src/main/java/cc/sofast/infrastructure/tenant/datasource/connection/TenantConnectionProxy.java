@@ -8,7 +8,7 @@ import java.util.concurrent.Executor;
 /**
  * 代理链接. 增加了tenant,schema等属性
  *
- * @author wxl
+ * @author apple
  */
 public class TenantConnectionProxy implements Connection {
     private final String schema;

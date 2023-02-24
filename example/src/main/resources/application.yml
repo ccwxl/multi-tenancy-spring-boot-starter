@@ -37,3 +37,13 @@ spring:
 mybatis-plus:
   global-config:
     banner: false
+
+sofast:
+  tenant:
+    resolver:
+      type: web
+      web:
+        web-type: header
+        id: ${sofast.tenant.propagation.id}
+    propagation:
+      id: X-Tenant

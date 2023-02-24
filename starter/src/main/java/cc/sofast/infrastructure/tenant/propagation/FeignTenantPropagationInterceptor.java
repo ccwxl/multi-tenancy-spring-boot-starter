@@ -1,6 +1,5 @@
 package cc.sofast.infrastructure.tenant.propagation;
 
-import cc.sofast.infrastructure.tenant.datasource.TenantDataSourceProperties;
 import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

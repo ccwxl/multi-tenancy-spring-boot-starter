@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author apple
  */
-public class CookieTenantResolver implements HttpRequestTenantResolver, TenantResolver {
+public class CookieTenantResolver implements HttpRequestTenantResolver {
 
     @Override
     public Serializable resolveTenantIdentifier() throws TenantNotFoundException {

@@ -1,6 +1,7 @@
 package cc.sofast.infrastructure.tenant.resolver.webfilter;
 
 import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.resolver.TenantResolver;
 import cc.sofast.infrastructure.tenant.resolver.http.HttpRequestTenantResolver;
 import cc.sofast.infrastructure.tenant.resolver.webfilter.match.TenantRequestMatcher;
 import jakarta.servlet.FilterChain;
@@ -23,10 +24,10 @@ public class TenantFilter extends OncePerRequestFilter implements Ordered {
     private static final Logger log = LoggerFactory.getLogger(TenantFilter.class);
 
     private final TenantRequestMatcher requestMatcher;
-    private final HttpRequestTenantResolver resolver;
+    private final TenantResolver resolver;
 
     public TenantFilter(TenantRequestMatcher requestMatcher,
-                        HttpRequestTenantResolver resolver) {
+                        TenantResolver resolver) {
         this.requestMatcher = requestMatcher;
         this.resolver = resolver;
     }
@@ -42,7 +43,7 @@ public class TenantFilter extends OncePerRequestFilter implements Ordered {
                                     FilterChain filterChain) throws ServletException, IOException {
         String tenant = null;
         if (requestMatcher.match(request)) {
-            tenant = (String) resolver.resolveTenantIdentifier(request);
+            tenant = (String) resolver.resolveTenantIdentifier();
         }
         try {
             if (StringUtils.hasLength(tenant)) {

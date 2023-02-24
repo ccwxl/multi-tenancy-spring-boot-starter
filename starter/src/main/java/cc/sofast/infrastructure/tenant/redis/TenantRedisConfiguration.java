@@ -1,5 +1,6 @@
 package cc.sofast.infrastructure.tenant.redis;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * @author apple
@@ -17,17 +20,71 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 @AutoConfiguration
 public class TenantRedisConfiguration {
 
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory);
-        return template;
+    /**
+     * 不带解析租户标识的redisTemplate
+     *
+     * @param redisConnectionFactory RedisConnectionFactory
+     * @param customizers            customizers
+     * @return RedisTemplate<String, Object>
+     */
+    @Bean("noneTenantRedisTemplate")
+    public RedisTemplate<String, Object> noneTenantRedisTemplate(RedisConnectionFactory redisConnectionFactory,
+                                                                 ObjectProvider<RedisTemplateCustomizer> customizers) {
+        RedisTemplate<String, Object> redisTemplate = redisTemplate(redisConnectionFactory, customizers);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        return redisTemplate;
     }
 
-    @Bean
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    /**
+     * 解析租户标识的 RedisTemplate
+     *
+     * @param redisConnectionFactory RedisConnectionFactory
+     * @param customizers            ObjectProvider<RedisTemplateCustomizer>
+     * @return RedisTemplate<String, Object>
+     */
+    @Bean("redisTemplate")
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory,
+                                                       ObjectProvider<RedisTemplateCustomizer> customizers) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
 
-        return new StringRedisTemplate(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new TenantPrefixStringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        customizers.orderedStream().forEach((customizer) -> customizer.customize(redisTemplate));
+        return redisTemplate;
+    }
+
+    /**
+     * 不解析租户标识的stringRedisTemplate
+     *
+     * @param redisConnectionFactory RedisConnectionFactory
+     * @return StringRedisTemplate
+     */
+    @Bean("noneTenantStringRedisTemplate")
+    public StringRedisTemplate noneTenantStringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisTemplate stringRedisTemplate = stringRedisTemplate(redisConnectionFactory);
+        stringRedisTemplate.setKeySerializer(RedisSerializer.string());
+        return stringRedisTemplate;
+    }
+
+    /**
+     * 解析租户标识的 StringRedisTemplate
+     *
+     * @param redisConnectionFactory RedisConnectionFactory
+     * @return StringRedisTemplate
+     */
+    @Bean("stringRedisTemplate")
+    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate(redisConnectionFactory);
+        stringRedisTemplate.setKeySerializer(new TenantPrefixStringRedisSerializer());
+        stringRedisTemplate.setValueSerializer(RedisSerializer.string());
+        stringRedisTemplate.setHashKeySerializer(RedisSerializer.string());
+        stringRedisTemplate.setHashValueSerializer(RedisSerializer.string());
+        return stringRedisTemplate;
     }
 
     /**

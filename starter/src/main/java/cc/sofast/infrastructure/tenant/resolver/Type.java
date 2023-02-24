@@ -8,17 +8,17 @@ package cc.sofast.infrastructure.tenant.resolver;
 public enum Type {
 
     /**
-     * 根据http request 解析
+     * 根据HTTP REQUEST 解析
      */
-    web,
+    WEB,
 
     /**
      * 固定解析方式
      */
-    fixed,
+    FIXED,
 
     /**
      * 系统属性
      */
-    properties,
+    PROPERTIES,
 }

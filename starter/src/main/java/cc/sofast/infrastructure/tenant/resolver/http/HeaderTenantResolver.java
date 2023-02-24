@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.Serializable;
 
-public class HeaderTenantResolver implements HttpRequestTenantResolver, TenantResolver {
+public class HeaderTenantResolver implements HttpRequestTenantResolver {
 
     private final TenantResolverProperties properties;
 

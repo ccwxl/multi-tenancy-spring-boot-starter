@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
 
-public class SubdomainTenantResolver implements HttpRequestTenantResolver, TenantResolver {
+public class SubdomainTenantResolver implements HttpRequestTenantResolver {
 
     @Override
     public Serializable resolveTenantIdentifier(HttpServletRequest request) throws TenantNotFoundException {

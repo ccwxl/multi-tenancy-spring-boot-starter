@@ -1,6 +1,7 @@
 package cc.sofast.infrastructure.tenant.resolver.http;
 
 import cc.sofast.infrastructure.tenant.exception.TenantNotFoundException;
+import cc.sofast.infrastructure.tenant.resolver.TenantResolver;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.io.Serializable;
 /**
  * @author apple
  */
-public interface HttpRequestTenantResolver {
+public interface HttpRequestTenantResolver extends TenantResolver {
 
     /**
      * 从http请求中解析当前租户

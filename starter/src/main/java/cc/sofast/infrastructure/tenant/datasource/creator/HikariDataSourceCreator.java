@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * Hikari数据源创建器
  *
- * @author wxl
+ * @author apple
  * @since 2020/1/21
  */
 public class HikariDataSourceCreator extends AbstractDataSourceCreator implements DataSourceCreator, InitializingBean {

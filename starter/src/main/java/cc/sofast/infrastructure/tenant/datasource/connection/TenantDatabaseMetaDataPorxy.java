@@ -6,7 +6,7 @@ import java.sql.*;
 /**
  * 元数据代理.
  *
- * @author wxl
+ * @author apple
  */
 public class TenantDatabaseMetaDataPorxy implements DatabaseMetaData {
     private final String dsKey;

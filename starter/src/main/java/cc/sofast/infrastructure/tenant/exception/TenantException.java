@@ -1,7 +1,7 @@
 package cc.sofast.infrastructure.tenant.exception;
 
 /**
- * @author wxl
+ * @author apple
  */
 public class TenantException extends RuntimeException {
 

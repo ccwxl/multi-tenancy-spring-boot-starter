@@ -7,11 +7,17 @@ import java.io.Serializable;
 /**
  * @author apple
  */
-public class FixedTenantResolver implements TenantResolver{
+public class FixedTenantResolver implements TenantResolver {
+
+    private TenantResolverProperties tenantResolverProperties;
+
+    public FixedTenantResolver(TenantResolverProperties tenantResolverProperties) {
+        this.tenantResolverProperties = tenantResolverProperties;
+    }
 
     @Override
     public Serializable resolveTenantIdentifier() throws TenantNotFoundException {
 
-        return null;
+        return tenantResolverProperties.getFixed().getValue();
     }
 }
