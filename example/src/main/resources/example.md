@@ -64,7 +64,7 @@ CREATE SCHEMA IF NOT EXISTS t3
     AUTHORIZATION t3;
 ```
 
-- 表
+- 分别在各个租户下创建表
 
 ```postgresql
 CREATE TABLE IF NOT EXISTS account

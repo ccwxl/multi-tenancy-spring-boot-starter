@@ -19,11 +19,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.github.openfeign:feign-core'
     implementation 'org.postgresql:postgresql'
     implementation 'com.baomidou:mybatis-plus-boot-starter'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {

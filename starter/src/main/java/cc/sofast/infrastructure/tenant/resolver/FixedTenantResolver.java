@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class FixedTenantResolver implements TenantResolver {
 
-    private TenantResolverProperties tenantResolverProperties;
+    private final TenantResolverProperties tenantResolverProperties;
 
     public FixedTenantResolver(TenantResolverProperties tenantResolverProperties) {
         this.tenantResolverProperties = tenantResolverProperties;

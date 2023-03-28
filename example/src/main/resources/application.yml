@@ -3,6 +3,13 @@ spring:
     tenant:
       enabled: true
       datasource:
+        def:
+          pool-name: def
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://127.0.0.1:5432/saas_shared_db
+          username: share_user
+          password: share_user
         shared:
           pool-name: pool
           type: com.zaxxer.hikari.HikariDataSource

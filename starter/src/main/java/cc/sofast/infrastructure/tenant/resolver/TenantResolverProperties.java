@@ -2,6 +2,8 @@ package cc.sofast.infrastructure.tenant.resolver;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.List;
+
 /**
  * @author apple
  */
@@ -13,6 +15,7 @@ public class TenantResolverProperties {
     private WebResolver web;
     private FixedResolver fixed;
     private SystemPropertiesResolver system;
+    private List<String> ignorePath;
 
     public static class WebResolver {
         private WebType webType;
@@ -97,5 +100,13 @@ public class TenantResolverProperties {
 
     public void setSystem(SystemPropertiesResolver system) {
         this.system = system;
+    }
+
+    public List<String> getIgnorePath() {
+        return ignorePath;
+    }
+
+    public void setIgnorePath(List<String> ignorePath) {
+        this.ignorePath = ignorePath;
     }
 }

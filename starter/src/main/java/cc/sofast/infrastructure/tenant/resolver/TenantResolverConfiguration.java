@@ -1,10 +1,11 @@
 package cc.sofast.infrastructure.tenant.resolver;
 
 import cc.sofast.infrastructure.tenant.resolver.http.*;
-import cc.sofast.infrastructure.tenant.resolver.webfilter.TenantFilter;
-import cc.sofast.infrastructure.tenant.resolver.webfilter.match.HttpPathPatterRequestMatcher;
-import cc.sofast.infrastructure.tenant.resolver.webfilter.match.TenantRequestMatcher;
+import cc.sofast.infrastructure.tenant.resolver.webfilter.TenantContextFilter;
+import cc.sofast.infrastructure.tenant.resolver.webfilter.match.HttpPathPatterRequestIgnoreMatcher;
+import cc.sofast.infrastructure.tenant.resolver.webfilter.match.TenantRequestIgnoreMatcher;
 import cc.sofast.infrastructure.tenant.support.ResolverEnvironmentPropertyUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -28,20 +29,30 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 public class TenantResolverConfiguration {
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public static class TenantFilterRegister {
+    public static class TenantFilterRegisterConfiguration {
 
-
+        /**
+         * create TenantResolverFilter
+         */
         @Bean
-        public TenantFilter tenantFilterRegister(TenantRequestMatcher tenantRequestMatcher,TenantResolver tenantResolver) {
+        @ConditionalOnMissingBean
+        public TenantContextFilter tenantFilterRegister(TenantRequestIgnoreMatcher tenantRequestIgnoreMatcher, TenantResolver tenantResolver) {
 
-            return new TenantFilter(tenantRequestMatcher,tenantResolver);
+            return new TenantContextFilter(tenantRequestIgnoreMatcher, tenantResolver);
         }
 
+        /**
+         * tenant request matcher
+         *
+         * @return TenantRequestMatcher
+         */
         @Bean
-        public TenantRequestMatcher tenantRequestMatcher() {
+        @ConditionalOnMissingBean
+        public TenantRequestIgnoreMatcher tenantRequestMatcher(TenantResolverProperties tenantResolverProperties) {
 
-            return new HttpPathPatterRequestMatcher();
+            return new HttpPathPatterRequestIgnoreMatcher(tenantResolverProperties);
         }
+
     }
 
     @Configuration
@@ -55,6 +66,28 @@ public class TenantResolverConfiguration {
             return new HeaderTenantResolver(tenantResolverProperties);
         }
 
+        @Bean
+        @Conditional(CookieConfigurationCondition.class)
+        public HttpRequestTenantResolver cookieRequestTenantResolver(TenantResolverProperties tenantResolverProperties) {
+
+            return new CookieTenantResolver(tenantResolverProperties);
+        }
+
+
+        @Bean
+        @Conditional(SubDomainConfigurationCondition.class)
+        public HttpRequestTenantResolver subDomainRequestTenantResolver(TenantResolverProperties tenantResolverProperties) {
+
+            return new SubdomainTenantResolver(tenantResolverProperties);
+        }
+
+
+        @Bean
+        @Conditional(ReqeustPathConfigurationCondition.class)
+        public HttpRequestTenantResolver requestPathTenantResolver(TenantResolverProperties tenantResolverProperties) {
+
+            return new RequestPathTenantResolver(tenantResolverProperties);
+        }
     }
 
     @Configuration
@@ -65,13 +98,11 @@ public class TenantResolverConfiguration {
 
             return new FixedTenantResolver(tenantResolverProperties);
         }
-
     }
 
     @Configuration
     @Conditional(ResolverPropertiesTypeConfigurationCondition.class)
-    public static class PropertiesTenantResolverConfiguration {
-
+    public static class SystemPropertiesTenantResolverConfiguration {
 
         @Bean
         public TenantResolver tenantResolver(TenantResolverProperties tenantResolverProperties) {
@@ -79,7 +110,6 @@ public class TenantResolverConfiguration {
             return new SystemPropertiesTenantResolver(tenantResolverProperties);
         }
     }
-
 
     static class ResolverWebTypeConfigurationCondition implements Condition {
 

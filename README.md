@@ -19,6 +19,8 @@
 
 ## Redis
 
+- 为每个租户增加不同的前缀来做数据隔离
+
 ## DB
 
 ![architecture.png](architecture.png)

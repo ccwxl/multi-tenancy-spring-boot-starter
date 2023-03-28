@@ -4,6 +4,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.CacheKeyPrefix;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +13,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.time.Duration;
 
 /**
  * @author apple
@@ -99,7 +102,7 @@ public class TenantRedisConfiguration {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
 
         //key 序列化
-        config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new TenantPrefixStringRedisSerializer()));
+        config = config.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new TenantPrefixStringRedisSerializer()));
         //value 序列化
         config = config.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 

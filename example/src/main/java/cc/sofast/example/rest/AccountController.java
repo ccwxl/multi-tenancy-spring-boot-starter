@@ -29,5 +29,9 @@ public class AccountController {
         return accountService.getById(account);
     }
 
+    @PutMapping("{accountId}")
+    public Account updateAccount(@PathVariable Long accountId, @RequestBody Account account) {
 
+        return accountService.getById(accountId);
+    }
 }
