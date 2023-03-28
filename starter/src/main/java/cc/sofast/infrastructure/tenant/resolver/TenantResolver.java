@@ -9,5 +9,10 @@ import java.io.Serializable;
  */
 public interface TenantResolver {
 
+    /**
+     * The name of the default tenant.
+     */
+    String DEFAULT = "def";
+
     Serializable resolveTenantIdentifier() throws TenantNotFoundException;
 }

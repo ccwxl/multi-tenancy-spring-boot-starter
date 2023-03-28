@@ -19,7 +19,7 @@
 
 ## Redis
 
-- 为每个租户增加不同的前缀来做数据隔离
+- 为每个租户增加不同的key前缀来做数据隔离
 
 ## DB
 
@@ -41,11 +41,4 @@
 
 ```
 implementation 'cc.sofast.infrastructure:multi-tenancy-datasource-spring-boot-starter:{lastverion}'
-```
-
-- 配置文件
-
-```yaml
-
-
 ```

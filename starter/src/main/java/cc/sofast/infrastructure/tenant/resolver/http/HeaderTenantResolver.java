@@ -11,7 +11,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.Serializable;
 
-public class HeaderTenantResolver implements HttpRequestTenantResolver {
+/**
+ * @author apple
+ */
+public class HeaderTenantResolver extends AbstractHttpRequestTenantResolver {
 
     private final TenantResolverProperties properties;
 
@@ -27,15 +30,5 @@ public class HeaderTenantResolver implements HttpRequestTenantResolver {
             throw new TenantNotFoundException("Tenant not resolver in header " + id + " value is null");
         }
         return tenant;
-    }
-
-    @Override
-    public Serializable resolveTenantIdentifier() throws TenantNotFoundException {
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        if (requestAttributes instanceof ServletRequestAttributes servletRequestAttributes) {
-            HttpServletRequest request = servletRequestAttributes.getRequest();
-            return resolveTenantIdentifier(request);
-        }
-        throw new TenantNotFoundException("Tenant not resolver in header " + properties.getWeb().getId() + " value is null");
     }
 }

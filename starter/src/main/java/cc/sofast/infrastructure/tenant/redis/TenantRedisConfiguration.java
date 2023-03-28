@@ -35,6 +35,10 @@ public class TenantRedisConfiguration {
                                                                  ObjectProvider<RedisTemplateCustomizer> customizers) {
         RedisTemplate<String, Object> redisTemplate = redisTemplate(redisConnectionFactory, customizers);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        redisTemplate.setHashKeySerializer(RedisSerializer.string());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
         return redisTemplate;
     }
 

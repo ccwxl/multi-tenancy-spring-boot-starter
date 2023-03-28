@@ -25,6 +25,8 @@ public class TenantResolverProperties {
          */
         private String id = "X-Tenant";
 
+        public int stripPrefix = 1;
+
         public WebType getWebType() {
             return webType;
         }
@@ -39,6 +41,14 @@ public class TenantResolverProperties {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public int getStripPrefix() {
+            return stripPrefix;
+        }
+
+        public void setStripPrefix(int stripPrefix) {
+            this.stripPrefix = stripPrefix;
         }
     }
 
