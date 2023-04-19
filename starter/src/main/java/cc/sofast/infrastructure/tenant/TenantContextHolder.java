@@ -1,4 +1,4 @@
-package cc.sofast.infrastructure.tenant.context;
+package cc.sofast.infrastructure.tenant;
 
 import org.springframework.core.NamedInheritableThreadLocal;
 import org.springframework.util.StringUtils;

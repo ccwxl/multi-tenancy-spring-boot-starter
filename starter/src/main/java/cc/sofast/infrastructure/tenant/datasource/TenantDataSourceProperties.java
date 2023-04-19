@@ -11,7 +11,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = TenantDataSourceProperties.PREFIX)
 public class TenantDataSourceProperties {
 
-    public static final String PREFIX = "spring.datasource.tenant";
+    public static final String PREFIX = "spring.multitenancy";
 
     /**
      * 必须设置默认的库,默认def

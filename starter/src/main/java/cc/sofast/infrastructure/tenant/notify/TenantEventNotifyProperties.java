@@ -9,17 +9,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = TenantEventNotifyProperties.PREFIX)
 public class TenantEventNotifyProperties {
 
-    public static final String PREFIX = "sofast.tenant.event";
+    public static final String PREFIX = "spring.multitenancy.event";
 
-    private Stream stream;
+    private Stream stream = new Stream();
 
     public static class Stream {
 
-        private int poolSize;
+        private int poolSize = 10;
 
-        private int pollTimeout;
-        private String key;
-        private long maxLen;
+        private int pollTimeout = 100;
+        private String key = "tenant_event_stream";
+        private long maxLen = 1000;
 
         public int getPoolSize() {
             return poolSize;

@@ -14,9 +14,4 @@ public enum TenantEventType {
      * DELETE
      */
     DELETE,
-
-    /**
-     * UPDATE
-     */
-    UPDATE,
 }

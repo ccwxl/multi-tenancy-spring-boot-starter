@@ -1,6 +1,6 @@
 package cc.sofast.infrastructure.tenant.propagation;
 
-import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.TenantContextHolder;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;

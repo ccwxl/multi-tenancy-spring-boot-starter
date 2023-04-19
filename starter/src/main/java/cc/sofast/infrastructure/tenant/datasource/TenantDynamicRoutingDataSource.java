@@ -1,6 +1,6 @@
 package cc.sofast.infrastructure.tenant.datasource;
 
-import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.TenantContextHolder;
 import cc.sofast.infrastructure.tenant.datasource.provider.TenantDataSourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

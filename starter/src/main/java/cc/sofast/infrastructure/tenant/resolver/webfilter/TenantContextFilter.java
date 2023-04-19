@@ -1,6 +1,6 @@
 package cc.sofast.infrastructure.tenant.resolver.webfilter;
 
-import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.TenantContextHolder;
 import cc.sofast.infrastructure.tenant.resolver.TenantResolver;
 import cc.sofast.infrastructure.tenant.resolver.webfilter.match.TenantRequestIgnoreMatcher;
 import jakarta.servlet.FilterChain;
@@ -39,7 +39,9 @@ public class TenantContextFilter extends OncePerRequestFilter {
         if (StringUtils.hasLength(tenant)) {
             TenantContextHolder.push(tenant);
         } else {
-            log.warn("current request notfound tenant request matched");
+            if (log.isDebugEnabled()) {
+                log.debug("current request notfound tenant request matched");
+            }
         }
 
         try {

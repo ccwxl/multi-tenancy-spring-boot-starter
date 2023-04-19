@@ -1,6 +1,5 @@
 package cc.sofast.infrastructure.tenant;
 
-import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
 import org.springframework.context.ApplicationContext;
 
 import java.util.function.Consumer;

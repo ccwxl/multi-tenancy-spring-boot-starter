@@ -1,6 +1,6 @@
 package cc.sofast.infrastructure.tenant.propagation;
 
-import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.TenantContextHolder;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.util.StringUtils;

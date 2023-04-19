@@ -1,6 +1,6 @@
 package cc.sofast.infrastructure.tenant.redis;
 
-import cc.sofast.infrastructure.tenant.context.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.TenantContextHolder;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.util.StringUtils;
 

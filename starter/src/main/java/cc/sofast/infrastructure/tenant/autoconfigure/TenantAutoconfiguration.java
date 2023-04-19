@@ -7,7 +7,9 @@ import cc.sofast.infrastructure.tenant.datasource.TenantDynamicRoutingDataSource
 import cc.sofast.infrastructure.tenant.datasource.creator.DefaultDataSourceCreator;
 import cc.sofast.infrastructure.tenant.datasource.provider.PropertiesTenantDataSourceProvider;
 import cc.sofast.infrastructure.tenant.datasource.provider.TenantDataSourceProvider;
+import cc.sofast.infrastructure.tenant.notify.TenancyNotifyAutoConfiguration;
 import cc.sofast.infrastructure.tenant.propagation.PropagationConfiguration;
+import cc.sofast.infrastructure.tenant.redis.TenantRedisConfiguration;
 import cc.sofast.infrastructure.tenant.resolver.TenantResolverConfiguration;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
@@ -30,7 +32,9 @@ import java.util.List;
 @AutoConfiguration
 @EnableConfigurationProperties(TenantDataSourceProperties.class)
 @AutoConfigureBefore(value = DataSourceAutoConfiguration.class)
-@Import({DataSourceCreatorAutoconfiguration.class, TenantResolverConfiguration.class, PropagationConfiguration.class})
+@Import({DataSourceCreatorAutoconfiguration.class,
+        TenantResolverConfiguration.class, PropagationConfiguration.class,
+        TenantRedisConfiguration.class, TenancyNotifyAutoConfiguration.class})
 @ConditionalOnProperty(prefix = TenantDataSourceProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class TenantAutoconfiguration implements InitializingBean {
 

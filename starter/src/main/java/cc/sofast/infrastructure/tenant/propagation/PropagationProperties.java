@@ -1,5 +1,6 @@
 package cc.sofast.infrastructure.tenant.propagation;
 
+import cc.sofast.infrastructure.tenant.support.Const;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -7,9 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = PropagationProperties.PREFIX)
 public class PropagationProperties {
-    public static final String PREFIX = "sofast.tenant.propagation";
+    public static final String PREFIX = "spring.multitenancy.propagation";
 
-    public String id = "X-Tenant";
+    public String id = Const.TENANT_ID;
 
     public String getId() {
         return id;

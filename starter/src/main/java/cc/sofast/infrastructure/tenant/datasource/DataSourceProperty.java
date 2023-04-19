@@ -54,9 +54,9 @@ public class DataSourceProperty {
     private Boolean lazy;
 
     /**
-     * 是否为共享数据源
+     * 租户数据源类型
      */
-    private Boolean shared = false;
+    private DsType tenantDsType = DsType.EXCLUSIVE;
 
     /**
      * 租户列表
@@ -151,14 +151,6 @@ public class DataSourceProperty {
         this.hikari = hikari;
     }
 
-    public Boolean getShared() {
-        return shared;
-    }
-
-    public void setShared(Boolean shared) {
-        this.shared = shared;
-    }
-
     public List<String> getTenants() {
         return tenants;
     }
@@ -182,5 +174,13 @@ public class DataSourceProperty {
 
     public void setJndiName(String jndiName) {
         this.jndiName = jndiName;
+    }
+
+    public DsType getTenantDsType() {
+        return tenantDsType;
+    }
+
+    public void setTenantDsType(DsType tenantDsType) {
+        this.tenantDsType = tenantDsType;
     }
 }

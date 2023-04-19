@@ -1,38 +1,44 @@
 spring:
-  datasource:
-    tenant:
-      enabled: true
-      datasource:
-        def:
-          pool-name: def
-          type: com.zaxxer.hikari.HikariDataSource
-          driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://127.0.0.1:5432/saas_shared_db
-          username: share_user
-          password: share_user
-        shared:
-          pool-name: pool
-          type: com.zaxxer.hikari.HikariDataSource
-          driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://127.0.0.1:5432/saas_shared_db
-          username: share_user
-          password: share_user
-          shared: true
-          tenants:
-            - t1
-            - t2
-          hikari:
-            maximum-pool-size: 10
-        t3:
-          pool-name: pool
-          type: com.zaxxer.hikari.HikariDataSource
-          driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://127.0.0.1:5432/t3
-          username: t3
-          password: t3
-          shared: false
-          hikari:
-            maximum-pool-size: 10
+  multitenancy:
+    resolver:
+      type: web
+      web:
+        web-type: header
+      ignore-path:
+        - /tenant/**
+    enabled: true
+    primary: def
+    datasource:
+      def:
+        pool-name: def
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://127.0.0.1:5432/saas_shared_db
+        username: share_user
+        password: share_user
+      shared:
+        pool-name: pool
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://127.0.0.1:5432/saas_shared_db
+        username: share_user
+        password: share_user
+        tenant-ds-type: share
+        tenants:
+          - t1
+          - t2
+        hikari:
+          maximum-pool-size: 10
+      t3:
+        pool-name: pool
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://127.0.0.1:5432/t3
+        username: t3
+        password: t3
+        tenant-ds-type: share
+        hikari:
+          maximum-pool-size: 10
   data:
     redis:
       host: 127.0.0.1
@@ -40,17 +46,6 @@ spring:
   cache:
     type: redis
 
-
 mybatis-plus:
   global-config:
     banner: false
-
-sofast:
-  tenant:
-    resolver:
-      type: web
-      web:
-        web-type: header
-        id: ${sofast.tenant.propagation.id}
-    propagation:
-      id: X-Tenant

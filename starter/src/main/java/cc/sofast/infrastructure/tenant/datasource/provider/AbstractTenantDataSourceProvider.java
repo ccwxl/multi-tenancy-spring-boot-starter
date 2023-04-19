@@ -1,6 +1,7 @@
 package cc.sofast.infrastructure.tenant.datasource.provider;
 
 import cc.sofast.infrastructure.tenant.datasource.DataSourceProperty;
+import cc.sofast.infrastructure.tenant.datasource.DsType;
 import cc.sofast.infrastructure.tenant.datasource.SeataMode;
 import cc.sofast.infrastructure.tenant.datasource.TenantDataSourceProxy;
 import cc.sofast.infrastructure.tenant.datasource.creator.AbstractDataSourceCreator;
@@ -43,7 +44,8 @@ public abstract class AbstractTenantDataSourceProvider implements TenantDataSour
             }
             dataSourceProperty.setPoolName(poolName);
             DataSource dataSource = defaultDataSourceCreator.createDataSource(dataSourceProperty);
-            if (dataSourceProperty.getShared()) {
+            //租户共享数据源
+            if (dataSourceProperty.getTenantDsType().equals(DsType.SHARE)) {
                 dataSourceMap.put(PREFIX + dsName, wrapDataSource(dataSource, dataSourceProperty, item.getKey()));
                 List<String> tenants = loadTenants(item.getKey());
                 for (String tenant : tenants) {
@@ -75,6 +77,6 @@ public abstract class AbstractTenantDataSourceProvider implements TenantDataSour
             }
             log.debug("tenant-datasource [{}] wrap seata plugin transaction mode ", name);
         }
-        return new TenantDataSourceProxy(targetDataSource, dataSourceProperty.getShared(), dataSourceProperty.getPoolName(), tenant, tenant);
+        return new TenantDataSourceProxy(targetDataSource, dataSourceProperty.getTenantDsType().equals(DsType.SHARE), dataSourceProperty.getPoolName(), tenant, tenant);
     }
 }
