@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  * @since 2020/1/21
  */
 public class HikariDataSourceCreator extends AbstractDataSourceCreator implements DataSourceCreator, InitializingBean {
-    private static final String HIKARI_DATASOURCE = "com.zaxxer.hikari.HikariDataSource";
+    public static final String HIKARI_DATASOURCE = "com.zaxxer.hikari.HikariDataSource";
 
     private static Method configCopyMethod = null;
 

@@ -12,8 +12,8 @@ import java.util.Map;
 public class JdbcTenantDataSourceProvider extends AbstractTenantDataSourceProvider {
 
 
-    public JdbcTenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator) {
-        super(defaultDataSourceCreator);
+    public JdbcTenantDataSourceProvider() {
+
     }
 
     @Override

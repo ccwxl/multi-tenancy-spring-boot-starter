@@ -51,17 +51,16 @@ public class TenantAutoconfiguration implements InitializingBean {
 
     @Bean
     @ConditionalOnMissingBean
-    public DataSource dataSource(List<TenantDataSourceProvider> providers) {
+    public DataSource dataSource(List<TenantDataSourceProvider> providers, DefaultDataSourceCreator defaultDataSourceCreator) {
 
-        return new TenantDynamicRoutingDataSource(providers);
+        return new TenantDynamicRoutingDataSource(providers, defaultDataSourceCreator);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public PropertiesTenantDataSourceProvider propertiesTenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator,
-                                                                                 TenantDataSourceProperties tenantDataSourceProperties) {
+    public PropertiesTenantDataSourceProvider propertiesTenantDataSourceProvider(TenantDataSourceProperties tenantDataSourceProperties) {
 
-        return new PropertiesTenantDataSourceProvider(defaultDataSourceCreator, tenantDataSourceProperties);
+        return new PropertiesTenantDataSourceProvider(tenantDataSourceProperties);
     }
 
 

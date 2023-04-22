@@ -1,15 +1,19 @@
 package cc.sofast.infrastructure.tenant.datasource;
 
 import cc.sofast.infrastructure.tenant.TenantContextHolder;
+import cc.sofast.infrastructure.tenant.datasource.creator.DefaultDataSourceCreator;
+import cc.sofast.infrastructure.tenant.datasource.provider.AbstractTenantDataSourceProvider;
 import cc.sofast.infrastructure.tenant.datasource.provider.TenantDataSourceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.datasource.AbstractDataSource;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -31,8 +35,14 @@ public class TenantDynamicRoutingDataSource extends AbstractDataSource
 
     private final List<TenantDataSourceProvider> tenantDataSourceProvider;
 
-    public TenantDynamicRoutingDataSource(List<TenantDataSourceProvider> tenantDataSourceProvider) {
+    private final DefaultDataSourceCreator defaultDataSourceCreator;
+
+    public TenantDynamicRoutingDataSource(List<TenantDataSourceProvider> tenantDataSourceProvider, DefaultDataSourceCreator defaultDataSourceCreator) {
         this.tenantDataSourceProvider = tenantDataSourceProvider;
+        this.defaultDataSourceCreator = defaultDataSourceCreator;
+        for (TenantDataSourceProvider tdsp : tenantDataSourceProvider) {
+            tdsp.setDefaultDataSourceCreator(defaultDataSourceCreator);
+        }
     }
 
     @Override
@@ -75,10 +85,6 @@ public class TenantDynamicRoutingDataSource extends AbstractDataSource
         return dataSource.getConnection(username, password);
     }
 
-    @Override
-    public void destroy() throws Exception {
-
-    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -118,7 +124,56 @@ public class TenantDynamicRoutingDataSource extends AbstractDataSource
      * @param dataSource db
      */
     private void closeDataSource(String ds, DataSource dataSource) {
+        if (dataSource instanceof TenantDataSourceProxy proxy) {
+            if (!proxy.isShared()) {
+                ((TenantDataSourceProxy) dataSource).close();
+            }
+        } else {
+            Method closeMethod = ReflectionUtils.findMethod(dataSource.getClass(), "close");
+            if (closeMethod != null) {
+                try {
+                    closeMethod.invoke(dataSource);
+                } catch (Exception e) {
+                    log.warn("datasource closed datasource named [{}] failed", ds, e);
+                }
+            }
+        }
+    }
 
+    @Override
+    public boolean register(DataSourceProperty dsp) {
+        if (dsp.getTenantDsType().equals(DsType.SHARE)) {
+            DataSource realDatasource = dataSourceMap.get(AbstractTenantDataSourceProvider.PREFIX + dsp.getPoolName());
+            if (realDatasource == null) {
+                //新建数据源
+                realDatasource = defaultDataSourceCreator.createDataSource(dsp);
+            }
+            //已存在数据源。增加租户子数据源
+            for (String tenant : dsp.getTenants()) {
+                dataSourceMap.put(tenant, AbstractTenantDataSourceProvider.wrapDataSource(realDatasource, dsp, tenant));
+            }
+        } else {
+            DataSource realDatasource = defaultDataSourceCreator.createDataSource(dsp);
+            for (String tenant : dsp.getTenants()) {
+                dataSourceMap.put(tenant, AbstractTenantDataSourceProvider.wrapDataSource(realDatasource, dsp, tenant));
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean remove(String tenant) {
+        dataSourceMap.remove(tenant);
+        return true;
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        log.info("tenant-datasource start closing ....");
+        for (Map.Entry<String, DataSource> item : dataSourceMap.entrySet()) {
+            closeDataSource(item.getKey(), item.getValue());
+        }
+        log.info("tenant-datasource all closed success,bye");
     }
 
     @Override
@@ -133,18 +188,5 @@ public class TenantDynamicRoutingDataSource extends AbstractDataSource
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return (iface.isInstance(this) || determineDataSource().isWrapperFor(iface));
-    }
-
-    @Override
-    public boolean register(String tenant, DataSourceProperty dsp) {
-
-        return false;
-    }
-
-    @Override
-    public boolean remove(String tenant) {
-
-
-        return false;
     }
 }

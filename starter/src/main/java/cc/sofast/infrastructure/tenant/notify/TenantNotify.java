@@ -8,6 +8,7 @@ import org.springframework.data.redis.connection.RedisStreamCommands;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,6 @@ import java.util.Map;
  * @author apple
  */
 public class TenantNotify {
-
     private static final Logger logger = LoggerFactory.getLogger(TenantNotify.class);
 
     private final TenantEventNotifyProperties tenantEventNotifyProperties;
@@ -38,6 +38,11 @@ public class TenantNotify {
      * @param tenantEvent 租户事件
      */
     public void pubTenantEvent(TenantEvent tenantEvent) {
+        Assert.notEmpty(tenantEvent.getTenants(), "tenant must not null.");
+        Assert.hasLength(tenantEvent.getDsType(), "dsType must not empty.");
+        Assert.hasLength(tenantEvent.getUrl(), "dsUrl must not empty.");
+        Assert.hasLength(tenantEvent.getUsername(), "dsUsername must not empty.");
+        Assert.hasLength(tenantEvent.getPassword(), "dsPassword must not empty.");
         RecordId recordId = stringRedisTemplate.execute(connection -> {
             try {
                 byte[] eventBytes = objectMapper.writeValueAsBytes(tenantEvent);

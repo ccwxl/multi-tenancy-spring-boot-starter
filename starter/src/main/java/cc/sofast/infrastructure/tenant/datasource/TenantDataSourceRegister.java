@@ -5,8 +5,7 @@ package cc.sofast.infrastructure.tenant.datasource;
  */
 public interface TenantDataSourceRegister {
 
-    boolean register(String tenant, DataSourceProperty dsp);
+    boolean register(DataSourceProperty dsp);
 
     boolean remove(String tenant);
-
 }

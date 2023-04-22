@@ -22,15 +22,11 @@ import java.util.Map;
  */
 public abstract class AbstractTenantDataSourceProvider implements TenantDataSourceProvider {
 
-    private static final String PREFIX = "#";
+    public static final String PREFIX = "#";
 
     private static final Logger log = LoggerFactory.getLogger(AbstractDataSourceCreator.class);
 
-    private final DefaultDataSourceCreator defaultDataSourceCreator;
-
-    public AbstractTenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator) {
-        this.defaultDataSourceCreator = defaultDataSourceCreator;
-    }
+    private DefaultDataSourceCreator defaultDataSourceCreator;
 
     protected Map<String, DataSource> createDataSourceMap(
             Map<String, DataSourceProperty> dataSourcePropertiesMap) {
@@ -43,23 +39,23 @@ public abstract class AbstractTenantDataSourceProvider implements TenantDataSour
                 poolName = dsName;
             }
             dataSourceProperty.setPoolName(poolName);
-            DataSource dataSource = defaultDataSourceCreator.createDataSource(dataSourceProperty);
+            DataSource realDataSource = defaultDataSourceCreator.createDataSource(dataSourceProperty);
             //租户共享数据源
             if (dataSourceProperty.getTenantDsType().equals(DsType.SHARE)) {
-                dataSourceMap.put(PREFIX + dsName, wrapDataSource(dataSource, dataSourceProperty, item.getKey()));
+                dataSourceMap.put(PREFIX + dsName, wrapDataSource(realDataSource, dataSourceProperty, item.getKey()));
                 List<String> tenants = loadTenants(item.getKey());
                 for (String tenant : tenants) {
-                    dataSourceMap.put(tenant, wrapDataSource(dataSource, dataSourceProperty, tenant));
+                    dataSourceMap.put(tenant, wrapDataSource(realDataSource, dataSourceProperty, tenant));
                 }
             } else {
-                dataSourceMap.put(dsName, wrapDataSource(dataSource, dataSourceProperty, item.getKey()));
+                dataSourceMap.put(dsName, wrapDataSource(realDataSource, dataSourceProperty, item.getKey()));
             }
         }
         return dataSourceMap;
     }
 
 
-    private DataSource wrapDataSource(DataSource dataSource, DataSourceProperty dataSourceProperty, String tenant) {
+    public static DataSource wrapDataSource(DataSource dataSource, DataSourceProperty dataSourceProperty, String tenant) {
         String name = dataSourceProperty.getPoolName();
         DataSource targetDataSource = dataSource;
 
@@ -78,5 +74,13 @@ public abstract class AbstractTenantDataSourceProvider implements TenantDataSour
             log.debug("tenant-datasource [{}] wrap seata plugin transaction mode ", name);
         }
         return new TenantDataSourceProxy(targetDataSource, dataSourceProperty.getTenantDsType().equals(DsType.SHARE), dataSourceProperty.getPoolName(), tenant, tenant);
+    }
+
+    public DefaultDataSourceCreator getDefaultDataSourceCreator() {
+        return defaultDataSourceCreator;
+    }
+
+    public void setDefaultDataSourceCreator(DefaultDataSourceCreator defaultDataSourceCreator) {
+        this.defaultDataSourceCreator = defaultDataSourceCreator;
     }
 }

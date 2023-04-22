@@ -11,8 +11,8 @@ import java.util.Map;
  */
 public class RestTenantDataSourceProvider extends AbstractTenantDataSourceProvider {
 
-    public RestTenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator) {
-        super(defaultDataSourceCreator);
+    public RestTenantDataSourceProvider() {
+
     }
 
     @Override

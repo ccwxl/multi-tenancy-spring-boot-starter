@@ -10,6 +10,7 @@ import org.springframework.util.ErrorHandler;
 public class TenantEventListenerErrorHandler implements ErrorHandler {
     @Override
     public void handleError(Throwable t) {
-        log.error("tenant event process failed. [{}] ", t.getMessage());
+
+        log.warn("tenant event process failed. [{}] ", t.getMessage());
     }
 }

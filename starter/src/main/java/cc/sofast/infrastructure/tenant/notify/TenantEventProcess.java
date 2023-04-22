@@ -2,15 +2,19 @@ package cc.sofast.infrastructure.tenant.notify;
 
 import cc.sofast.infrastructure.tenant.datasource.DataSourceProperty;
 import cc.sofast.infrastructure.tenant.datasource.TenantDataSourceRegister;
+import cc.sofast.infrastructure.tenant.datasource.creator.HikariDataSourceCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.stream.MapRecord;
 import org.springframework.data.redis.stream.StreamListener;
 import org.springframework.util.CollectionUtils;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -48,12 +52,41 @@ public class TenantEventProcess implements StreamListener<String, MapRecord<Stri
 
     private void createTenant(TenantEvent tenantEvent) {
         if (!CollectionUtils.isEmpty(tenantEvent.getTenants())) {
-            for (String tenant : tenantEvent.getTenants()) {
-                //TODO 1
-                DataSourceProperty dataSourceProperty = new DataSourceProperty();
-                tenantDataSourceRegister.register(tenant, dataSourceProperty);
-            }
+            DataSourceProperty dataSourceProperty = tenantEventToDsProperty(tenantEvent);
+            tenantDataSourceRegister.register(dataSourceProperty);
         }
+    }
+
+    private DataSourceProperty tenantEventToDsProperty(TenantEvent te) {
+        DataSourceProperty dsp = new DataSourceProperty();
+        dsp.setTenants(te.getTenants());
+        dsp.setPoolName(te.getPoolName());
+        dsp.setLazy(false);
+        dsp.setTenantDsType(te.getTenantDsType());
+        dsp.setType(getDsType(te.getDsType()));
+        dsp.setDriverClassName(te.getDriverClassName());
+        dsp.setUsername(te.getUsername());
+        dsp.setPassword(te.getPassword());
+        dsp.setUrl(te.getUrl());
+        dsp.setSeata(te.getSeata());
+        dsp.setSeataMode(te.getSeataMode());
+        dsp.setP6spy(te.getP6spy());
+        dsp.setHikari(getHikari(te));
+        return dsp;
+    }
+
+    private HikariConfig getHikari(TenantEvent te) {
+        HikariConfig hc = new HikariConfig();
+        hc.setMaximumPoolSize(te.getMaxPoolSize());
+        hc.setMinimumIdle(te.getMinIdle());
+        return hc;
+    }
+
+    private Class<? extends DataSource> getDsType(String dsType) {
+        if (dsType.equals(HikariDataSourceCreator.HIKARI_DATASOURCE)) {
+            return HikariDataSource.class;
+        }
+        return null;
     }
 
     /**

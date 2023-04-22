@@ -15,9 +15,7 @@ public class PropertiesTenantDataSourceProvider extends AbstractTenantDataSource
 
     private final TenantDataSourceProperties tenantDataSourceProperties;
 
-    public PropertiesTenantDataSourceProvider(DefaultDataSourceCreator defaultDataSourceCreator,
-                                              TenantDataSourceProperties tenantDataSourceProperties) {
-        super(defaultDataSourceCreator);
+    public PropertiesTenantDataSourceProvider(TenantDataSourceProperties tenantDataSourceProperties) {
         this.tenantDataSourceProperties = tenantDataSourceProperties;
     }
 

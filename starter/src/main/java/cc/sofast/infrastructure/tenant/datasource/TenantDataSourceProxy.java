@@ -141,4 +141,20 @@ public class TenantDataSourceProxy extends AbstractDataSource implements Closeab
     public DataSource getSharedDataSource() {
         return sharedDataSource;
     }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public String getDsKey() {
+        return dsKey;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public String getTenant() {
+        return tenant;
+    }
 }

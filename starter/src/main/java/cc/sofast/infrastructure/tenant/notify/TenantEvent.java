@@ -12,6 +12,11 @@ import java.util.List;
 public class TenantEvent {
 
     /**
+     * 连接池名称(只是一个名称标识)</br> 默认是配置文件上的名称
+     */
+    private String poolName;
+
+    /**
      * 操作类型
      */
     private TenantEventType type;
@@ -40,11 +45,6 @@ public class TenantEvent {
      * seata使用模式，默认AT
      */
     private SeataMode seataMode = SeataMode.AT;
-
-    /**
-     * 连接池名称(只是一个名称标识)</br> 默认是配置文件上的名称
-     */
-    private String poolName;
 
     /**
      * 连接池类型，如果不设置自动查找 Druid > HikariCp
@@ -80,6 +80,8 @@ public class TenantEvent {
      * 最小存活的连接数
      */
     private Integer minIdle;
+
+    private Boolean p6spy = false;
 
     public TenantEvent() {
         this.eventTs = System.currentTimeMillis();
@@ -197,4 +199,11 @@ public class TenantEvent {
         this.eventTs = eventTs;
     }
 
+    public Boolean getP6spy() {
+        return p6spy;
+    }
+
+    public void setP6spy(Boolean p6spy) {
+        this.p6spy = p6spy;
+    }
 }

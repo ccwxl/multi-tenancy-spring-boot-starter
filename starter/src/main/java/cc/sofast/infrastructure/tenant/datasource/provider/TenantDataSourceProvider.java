@@ -1,5 +1,7 @@
 package cc.sofast.infrastructure.tenant.datasource.provider;
 
+import cc.sofast.infrastructure.tenant.datasource.creator.DefaultDataSourceCreator;
+
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +10,13 @@ import java.util.Map;
  * @author apple
  */
 public interface TenantDataSourceProvider {
+    /**
+     * 设置 DefaultDataSourceCreator
+     *
+     * @param defaultDataSourceCreator defaultDataSourceCreator
+     */
+    void setDefaultDataSourceCreator(DefaultDataSourceCreator defaultDataSourceCreator);
+
     /**
      * 加载所有数据源
      *
