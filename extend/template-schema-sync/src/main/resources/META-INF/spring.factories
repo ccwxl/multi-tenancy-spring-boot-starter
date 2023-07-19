@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cc.sofast.infrastructure.jdbc.schema.SchemaAutoconfiguration

@@ -75,6 +75,9 @@ public class TenantEventProcess implements StreamListener<String, MapRecord<Stri
         return dsp;
     }
 
+    /**
+     * TODO 需要重构。支持多种数据源注册。使用json/yaml配置。
+     */
     private HikariConfig getHikari(TenantEvent te) {
         HikariConfig hc = new HikariConfig();
         hc.setMaximumPoolSize(te.getMaxPoolSize());

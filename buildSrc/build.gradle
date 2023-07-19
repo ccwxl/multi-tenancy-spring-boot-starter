@@ -16,12 +16,10 @@ repositories {
 }
 
 dependencies {
-    //TODO 对于一些starter库来说并不需要依赖这么多应用级别的插件
-    implementation('org.springframework.boot:org.springframework.boot.gradle.plugin:3.0.6')
-    implementation('org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.21')
+    implementation('org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.1')
+    implementation('org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.23')
     implementation('io.spring.gradle:dependency-management-plugin:1.1.0')
-    implementation('io.freefair.lombok:io.freefair.lombok.gradle.plugin:6.5.1')
-    implementation("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.34")
+    implementation('io.freefair.lombok:io.freefair.lombok.gradle.plugin:8.0.1')
 }
 
 gradlePlugin {

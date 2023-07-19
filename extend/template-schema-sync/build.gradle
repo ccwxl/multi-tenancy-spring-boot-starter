@@ -1,0 +1,34 @@
+plugins {
+    id 'sofast.module.plugin'
+}
+
+processAot {
+    enabled(false)
+}
+
+processTestAot {
+    enabled(false)
+}
+
+bootJar {
+    enabled(false)
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.postgresql:postgresql'
+    compileOnly 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+    enabled(false)
+    useJUnitPlatform()
+    jvmArgs["--add-opens java.base/java.lang=ALL-UNNAMED"]
+}
