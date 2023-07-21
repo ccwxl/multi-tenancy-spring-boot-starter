@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation('org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.1')
+    implementation('org.springframework.boot:org.springframework.boot.gradle.plugin:3.1.2')
     implementation('org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.23')
     implementation('io.spring.gradle:dependency-management-plugin:1.1.0')
     implementation('io.freefair.lombok:io.freefair.lombok.gradle.plugin:8.0.1')
