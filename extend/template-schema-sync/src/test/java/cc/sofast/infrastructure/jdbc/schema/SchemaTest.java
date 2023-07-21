@@ -2,9 +2,9 @@ package cc.sofast.infrastructure.jdbc.schema;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 class SchemaTest {
 
@@ -21,5 +21,13 @@ class SchemaTest {
             System.out.println(line); // 输出命令执行的结果
         }
         reader.close();
+    }
+
+
+    @Test
+    public void testCreate() {
+        Schema build = Schema.builder().build();
+        build.init();
+        System.out.println("ok");
     }
 }

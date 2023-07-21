@@ -21,6 +21,8 @@ repositories {
 dependencies {
     compileOnly 'org.postgresql:postgresql'
     compileOnly 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.apache.commons:commons-compress:1.23.0'
+    implementation 'org.tukaani:xz:1.9'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
