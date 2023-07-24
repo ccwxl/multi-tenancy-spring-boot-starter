@@ -1,5 +1,8 @@
 package cc.sofast.infrastructure.jdbc.schema.diff;
 
+import cc.sofast.infrastructure.jdbc.schema.SchemaInfo;
+import cc.sofast.infrastructure.jdbc.schema.postgresql.pgdump.PgDump;
+import cc.sofast.infrastructure.jdbc.schema.utils.PgDumpUtils;
 import com.github.difflib.text.DiffRow;
 import com.github.difflib.text.DiffRowGenerator;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -8,16 +11,12 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 class SchemaDiffTest {
-
-    @Test
-    void diff() {
-
-    }
 
     @Test
     void diffString() {
@@ -71,5 +70,28 @@ class SchemaDiffTest {
         System.out.println(formattedMarkdown);
 
 //        System.out.println(markdownTable);
+    }
+
+    @Test
+    void testDiff() throws IOException {
+        SchemaInfo source = new SchemaInfo();
+        source.setHost("127.0.0.1");
+        source.setPort(5432);
+        source.setDb("postgres");
+        source.setSchema("s1");
+        source.setUsername("postgres");
+        source.setPassword("postgres");
+
+        SchemaInfo target = new SchemaInfo();
+        target.setHost("127.0.0.1");
+        target.setPort(5432);
+        target.setDb("postgres");
+        target.setSchema("s2");
+        target.setUsername("postgres");
+        target.setPassword("postgres");
+
+        SchemaDiff schemaDiff = new SchemaDiff();
+        String diff = schemaDiff.diff(source, target, PgDumpUtils.getPgDumpBinFileDir(""));
+        System.out.println(diff);
     }
 }

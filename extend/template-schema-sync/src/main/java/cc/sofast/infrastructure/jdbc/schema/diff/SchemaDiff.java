@@ -21,40 +21,53 @@ import java.util.List;
  */
 public class SchemaDiff implements Diff {
 
+    private static final String SPACE = "   ";
+    private static final String TB_HEADER = "|:--------|:---|";
+    private static final String DELIMITER = "|";
+    private static final String DIFF_STYLE_START = "<font color=\"#da0000\">";
+    private static final String DIFF_STYLE_END = "</font>";
+    private static final String WRAP = "\n";
+
     @Override
     public String diff(SchemaInfo source, SchemaInfo target, String binFileDir) throws IOException {
         PostgresqlCommand dump = new PgDump();
         String sourceCommand = dump.builder(source, binFileDir);
         String targetCommand = dump.builder(target, binFileDir);
 
-        String sourceSQL = OSUtils.exeCmd(sourceCommand);
-        String targetSQL = OSUtils.exeCmd(targetCommand);
+        String sourceText = OSUtils.exeCmd(sourceCommand);
+        String targetText = OSUtils.exeCmd(targetCommand);
 
         DiffRowGenerator generator = DiffRowGenerator.create()
                 .showInlineDiffs(true)
                 .inlineDiffByWord(true)
                 .build();
-        List<DiffRow> rows = generator.generateDiffRows(Arrays.asList(sourceSQL.split("\n")), Arrays.asList(targetSQL.split("\n")));
+
+        //将Schema 进行替换，避免太多的diff 影响
+        sourceText = sourceText.replaceAll(source.getSchema(), "{replace}");
+        targetText = targetText.replaceAll(target.getSchema(), "{replace}");
+
+        List<DiffRow> rows = generator.generateDiffRows(Arrays.asList(sourceText.split(WRAP)), Arrays.asList(targetText.split(WRAP)));
         StringBuilder diffStr = new StringBuilder();
-        //TODO 需要重构
-        diffStr.append("|source|target|").append("\n");
-        diffStr.append("|:--------|:---|").append("\n");
+        diffStr.append(DELIMITER).append(source.getSchema()).append(DELIMITER).append(target.getSchema()).append(DELIMITER).append(WRAP);
+        diffStr.append(TB_HEADER).append(WRAP);
         for (DiffRow row : rows) {
             if (!row.getTag().equals(DiffRow.Tag.EQUAL)) {
-                diffStr.append("|<font color=\"#da0000\">").append(row.getOldLine()).append("</font> |").append("<font color=\"#da0000\">").append(row.getNewLine()).append("</font> |").append("\n");
+                diffStr.append(DELIMITER)
+                        .append(DIFF_STYLE_START).append(row.getOldLine()).append(DIFF_STYLE_END).append(DELIMITER)
+                        .append(DIFF_STYLE_START).append(row.getNewLine()).append(DIFF_STYLE_END).append(DELIMITER)
+                        .append(WRAP);
             } else {
-                diffStr.append("| ").append(row.getOldLine()).append("|").append(row.getNewLine()).append(" |").append("\n");
+                diffStr.append(DELIMITER).append(SPACE).append(row.getOldLine())
+                        .append(DELIMITER).append(SPACE).append(row.getNewLine())
+                        .append(DELIMITER).append(WRAP);
             }
         }
         String markdownTable = diffStr.toString();
         // Parse the markdown
         Parser parser = Parser.builder().extensions(Collections.singleton(TablesExtension.create())).build();
         Node document = parser.parse(markdownTable);
-
         // Format the parsed markdown 美化表格
         Formatter formatter = Formatter.builder().extensions(Collections.singleton(TablesExtension.create())).build();
-        String formattedMarkdown = formatter.render(document);
-
-        return formattedMarkdown;
+        return formatter.render(document);
     }
 }

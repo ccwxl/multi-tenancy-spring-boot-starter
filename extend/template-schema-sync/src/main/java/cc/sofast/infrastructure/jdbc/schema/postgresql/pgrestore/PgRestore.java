@@ -3,6 +3,9 @@ package cc.sofast.infrastructure.jdbc.schema.postgresql.pgrestore;
 import cc.sofast.infrastructure.jdbc.schema.SchemaInfo;
 import cc.sofast.infrastructure.jdbc.schema.postgresql.PostgresqlCommand;
 
+/**
+ * @author apple
+ */
 public class PgRestore implements PostgresqlCommand {
 
 

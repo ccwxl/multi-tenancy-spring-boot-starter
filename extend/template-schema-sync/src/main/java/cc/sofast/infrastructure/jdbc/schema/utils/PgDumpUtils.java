@@ -32,7 +32,7 @@ public class PgDumpUtils {
      */
     public static String getDefaultBaseDir() {
 
-        return OSUtils.getUserHome().getAbsoluteFile() + "/multitenancy";
+        return OSUtils.getUserHome().getAbsoluteFile() + "/multitenancy/";
     }
 
     /**

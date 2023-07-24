@@ -1,10 +1,7 @@
 package cc.sofast.infrastructure.jdbc.schema.diff;
 
 import cc.sofast.infrastructure.jdbc.schema.SchemaInfo;
-import org.springframework.util.StreamUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -12,5 +9,14 @@ import java.io.IOException;
  */
 public interface Diff {
 
+    /**
+     * pg_dump
+     *
+     * @param source     原
+     * @param target     目标
+     * @param binFileDir pg_dump 目录
+     * @return diff markdown
+     * @throws IOException Exception
+     */
     String diff(SchemaInfo source, SchemaInfo target, String binFileDir) throws IOException;
 }
