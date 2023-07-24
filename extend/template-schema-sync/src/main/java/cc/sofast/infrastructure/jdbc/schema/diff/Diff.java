@@ -12,5 +12,5 @@ import java.io.IOException;
  */
 public interface Diff {
 
-    String diff(SchemaInfo source, SchemaInfo target,String binFileDir);
+    String diff(SchemaInfo source, SchemaInfo target, String binFileDir) throws IOException;
 }

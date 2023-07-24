@@ -3,6 +3,7 @@ package cc.sofast.infrastructure.jdbc.schema.diff;
 import cc.sofast.infrastructure.jdbc.schema.SchemaInfo;
 import cc.sofast.infrastructure.jdbc.schema.postgresql.PostgresqlCommand;
 import cc.sofast.infrastructure.jdbc.schema.postgresql.pgdump.PgDump;
+import cc.sofast.infrastructure.jdbc.schema.utils.OSUtils;
 import com.github.difflib.text.DiffRow;
 import com.github.difflib.text.DiffRowGenerator;
 import com.vladsch.flexmark.ext.tables.TablesExtension;
@@ -10,6 +11,7 @@ import com.vladsch.flexmark.formatter.Formatter;
 import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.ast.Node;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,10 +22,14 @@ import java.util.List;
 public class SchemaDiff implements Diff {
 
     @Override
-    public String diff(SchemaInfo source, SchemaInfo target, String binFileDir) {
+    public String diff(SchemaInfo source, SchemaInfo target, String binFileDir) throws IOException {
         PostgresqlCommand dump = new PgDump();
-        String sourceSQL = dump.builder(source, binFileDir);
-        String targetSQL = dump.builder(target, binFileDir);
+        String sourceCommand = dump.builder(source, binFileDir);
+        String targetCommand = dump.builder(target, binFileDir);
+
+        String sourceSQL = OSUtils.exeCmd(sourceCommand);
+        String targetSQL = OSUtils.exeCmd(targetCommand);
+
         DiffRowGenerator generator = DiffRowGenerator.create()
                 .showInlineDiffs(true)
                 .inlineDiffByWord(true)
