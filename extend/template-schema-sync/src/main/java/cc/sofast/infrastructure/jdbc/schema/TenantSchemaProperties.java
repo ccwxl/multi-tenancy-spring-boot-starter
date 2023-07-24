@@ -13,10 +13,11 @@ import static cc.sofast.infrastructure.jdbc.schema.TenantSchemaProperties.PREFIX
 @Setter
 @ConfigurationProperties(PREFIX)
 public class TenantSchemaProperties {
+
     public static final String PREFIX = "spring.multitenancy.db.schema";
 
     /**
      * 默认为用户目录下 multitenancy 目录
      */
-    private String workDir;
+    private String baseDir;
 }

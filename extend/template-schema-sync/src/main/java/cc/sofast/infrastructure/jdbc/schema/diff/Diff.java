@@ -12,12 +12,5 @@ import java.io.IOException;
  */
 public interface Diff {
 
-    String diff(SchemaInfo source, SchemaInfo target);
-
-    default void diff(SchemaInfo source, SchemaInfo target, File file) throws IOException {
-        String diff = diff(source, target);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-            StreamUtils.copy(diff.getBytes(), fileOutputStream);
-        }
-    }
+    String diff(SchemaInfo source, SchemaInfo target,String binFileDir);
 }

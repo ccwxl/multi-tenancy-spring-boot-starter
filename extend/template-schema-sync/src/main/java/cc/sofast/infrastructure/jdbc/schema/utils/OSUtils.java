@@ -1,6 +1,10 @@
 package cc.sofast.infrastructure.jdbc.schema.utils;
 
+import cc.sofast.infrastructure.jdbc.schema.shell.ShellExecutor;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 public class OSUtils {
 
@@ -87,5 +91,33 @@ public class OSUtils {
      */
     public static File getUserHome() {
         return new File(System.getProperty("user.home"));
+    }
+
+
+    /**
+     * Execute the shell
+     *
+     * @param command command
+     * @return result of execute the shell
+     * @throws IOException errors
+     */
+    public static String exeShell(String[] command) throws IOException {
+        return ShellExecutor.execCommand(command);
+    }
+
+    /**
+     * Execute the corresponding command of Linux or Windows
+     *
+     * @param command command
+     * @return result of execute command
+     * @throws IOException errors
+     */
+    public static String exeCmd(String command) throws IOException {
+        StringTokenizer st = new StringTokenizer(command);
+        String[] cmdArray = new String[st.countTokens()];
+        for (int i = 0; st.hasMoreTokens(); i++) {
+            cmdArray[i] = st.nextToken();
+        }
+        return exeShell(cmdArray);
     }
 }

@@ -1,8 +1,11 @@
 package cc.sofast.infrastructure.jdbc.schema;
 
+import lombok.Getter;
+
 /**
  * @author apple
  */
+@Getter
 public class SchemaInfo {
 
     private String username;
@@ -13,45 +16,31 @@ public class SchemaInfo {
 
     private int port;
 
-    private String schema;
+    private String db;
 
-    public String getUsername() {
-        return username;
-    }
+    private String schema;
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getSchema() {
-        return schema;
-    }
-
     public void setSchema(String schema) {
         this.schema = schema;
-    }
-
-    public String getHost() {
-        return host;
     }
 
     public void setHost(String host) {
         this.host = host;
     }
 
-    public int getPort() {
-        return port;
-    }
-
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public void setDb(String db) {
+        this.db = db;
     }
 }
