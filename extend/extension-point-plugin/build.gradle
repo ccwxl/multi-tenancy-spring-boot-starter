@@ -19,10 +19,14 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.postgresql:postgresql'
-    compileOnly 'org.springframework.boot:spring-boot-starter-jdbc'
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'com.google.auto.service:auto-service:1.1.1'
+    annotationProcessor 'com.google.auto.service:auto-service:1.1.1'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 tasks.named('test') {

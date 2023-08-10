@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cc.sofast.infrastructure.extension.TenantExtensionAutoconfiguration
+cc.sofast.infrastructure.extension.ExtensionAutoConfiguration
