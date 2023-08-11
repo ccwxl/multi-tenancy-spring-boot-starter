@@ -10,20 +10,20 @@ import cc.sofast.infrastructure.customization.TKey;
 public class StandardSQLCustomizationLoader extends JdbcCustomizationLoader {
 
     @Override
-    protected String getSQL() {
+    protected String getSaveOrUpdateSQL(TKey tKey, String valJson) {
 
         return null;
     }
 
     @Override
-    public boolean remove(TKey key) {
+    protected String getDeleteSQL(TKey tKey) {
 
-        return false;
+        return null;
     }
 
     @Override
-    public boolean saveOrUpdate(TKey key, String valJson) {
+    protected String getValSQL(TKey tKey) {
 
-        return false;
+        return null;
     }
 }

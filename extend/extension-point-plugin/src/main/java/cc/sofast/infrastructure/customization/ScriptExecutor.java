@@ -1,10 +1,12 @@
 package cc.sofast.infrastructure.customization;
 
 
+import cc.sofast.infrastructure.customization.script.EngineExecutorResult;
 import cc.sofast.infrastructure.customization.script.Script;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 /**
  * @author wxl
@@ -14,13 +16,22 @@ public class ScriptExecutor {
 
     Map<String, Script> scripts = new HashMap<>();
 
-    public void init() {
-        //扫描脚本执行器。进行注册。使用SPI的方式
-
+    public ScriptExecutor() {
+        init();
     }
 
-    public Object eval(DynamicScriptModel dsm, Map<String, Object> param) {
+    public void init() {
+        //扫描脚本执行器。进行注册。使用SPI的方式
+        ServiceLoader<Script> load = ServiceLoader.load(Script.class);
+        for (Script script : load) {
+            String type = script.type();
+            scripts.put(type, script);
+        }
+    }
 
-        return null;
+    public EngineExecutorResult eval(DynamicScriptModel dsm, Map<String, Object> param) {
+        String type = dsm.getType();
+        Script script = scripts.get(type);
+        return script.eval(dsm.getScript(), param);
     }
 }

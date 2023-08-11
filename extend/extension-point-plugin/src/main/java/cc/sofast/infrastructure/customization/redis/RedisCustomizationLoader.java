@@ -11,19 +11,18 @@ public class RedisCustomizationLoader implements CustomizationLoader {
     @Override
     public String val(TKey key) {
 
-        return "[1,2]";
+        return null;
     }
 
     @Override
     public boolean remove(TKey key) {
 
-        return false;
+        return true;
     }
 
     @Override
     public boolean saveOrUpdate(TKey key, String valJson) {
 
-
-        return false;
+        return true;
     }
 }

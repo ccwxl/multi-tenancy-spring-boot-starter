@@ -1,0 +1,5 @@
+{
+  "type": "groovy",
+  "describe": "this is groovy test.",
+  "script": "def HelloWorld() {\n    println \"hello world\"\n}\n\nHelloWorld()"
+}

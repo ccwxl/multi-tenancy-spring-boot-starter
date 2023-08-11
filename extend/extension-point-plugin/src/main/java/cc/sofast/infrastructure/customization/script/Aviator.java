@@ -1,6 +1,9 @@
 package cc.sofast.infrastructure.customization.script;
 
 import com.google.auto.service.AutoService;
+import com.googlecode.aviator.AviatorEvaluator;
+import com.googlecode.aviator.Expression;
+import com.googlecode.aviator.script.AviatorScriptEngine;
 
 import java.util.Map;
 
@@ -10,21 +13,15 @@ import java.util.Map;
 @AutoService(Script.class)
 public class Aviator implements Script {
 
-    @Override
-    public void init() {
-        //脚本的缓存，初始化等等
 
+    @Override
+    public String type() {
+        return "aviator";
     }
 
     @Override
-    public Object eval(String script, Map<String, Object> param) {
-
-        return null;
-    }
-
-
-    @Override
-    public void destroy() {
-
+    public EngineExecutorResult eval(String script, Map<String, Object> param) {
+        Expression compile = AviatorEvaluator.compile(script, true);
+        return EngineExecutorResult.success(compile.execute(param));
     }
 }

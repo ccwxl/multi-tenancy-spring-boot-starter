@@ -1,6 +1,8 @@
 package cc.sofast.infrastructure.customization;
 
 
+import cc.sofast.infrastructure.customization.script.EngineExecutorResult;
+
 import java.util.Map;
 
 /**
@@ -14,11 +16,19 @@ public class TenantDynamicScriptExecutor {
 
     private ScriptExecutor scriptExecutor;
 
-    public Object eval(TKey key, Map<String, Object> param) {
+    public EngineExecutorResult eval(TKey key, Map<String, Object> param) {
         //将公共字段放入到参数上去
         param.put("tenant", key.getTenant());
         param.put("key", key.getKey());
         DynamicScriptModel dsm = tenantCustomization.getVal(key, DynamicScriptModel.class);
         return scriptExecutor.eval(dsm, param);
+    }
+
+    public void setTenantCustomization(TenantCustomization tenantCustomization) {
+        this.tenantCustomization = tenantCustomization;
+    }
+
+    public void setScriptExecutor(ScriptExecutor scriptExecutor) {
+        this.scriptExecutor = scriptExecutor;
     }
 }

@@ -8,9 +8,14 @@ import java.util.Map;
  */
 public interface Script {
 
-    void init();
+    String type();
 
-    Object eval(String script, Map<String, Object> param);
+    default void init() {
+    }
 
-    void destroy();
+    EngineExecutorResult eval(String script, Map<String, Object> param);
+
+    default void destroy() {
+    }
+
 }

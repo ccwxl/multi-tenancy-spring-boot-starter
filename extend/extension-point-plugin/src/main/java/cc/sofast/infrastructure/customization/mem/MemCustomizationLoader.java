@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author wxl
  */
 public class MemCustomizationLoader extends RedisCustomizationLoader {
+
     private static final Map<TKey, String> KV = new ConcurrentHashMap<>();
 
     @Override
