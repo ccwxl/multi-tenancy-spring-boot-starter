@@ -2,8 +2,11 @@ package cc.sofast.infrastructure.customization.db;
 
 import cc.sofast.infrastructure.customization.PersistentCustomizationLoader;
 import cc.sofast.infrastructure.customization.TKey;
+import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.util.Assert;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,24 +21,26 @@ public abstract class JdbcCustomizationLoader extends PersistentCustomizationLoa
 
     @Override
     public String val(TKey key) {
-        String getSQL = getValSQL(key);
-        return jdbcTemplate.queryForObject(getSQL, ResultSet::getString);
+        Pair<String, BeanPropertySqlParameterSource> valSQL = getValSQL(key);
+        return jdbcTemplate.queryForObject(valSQL.getFirst(), ResultSet::getString, valSQL.getSecond());
     }
 
     public boolean remove(TKey key) {
-        int update = jdbcTemplate.update(getDeleteSQL(key));
+        Pair<String, BeanPropertySqlParameterSource> deleteSQL = getDeleteSQL(key);
+        int update = jdbcTemplate.update(deleteSQL.getFirst(), deleteSQL.getSecond());
         return update > 0;
     }
 
     public boolean saveOrUpdate(TKey key, String valJson) {
-        int update = jdbcTemplate.update(getSaveOrUpdateSQL(key, valJson));
-        return update>0;
+        Pair<String, BeanPropertySqlParameterSource> saveSQL = getSaveOrUpdateSQL(key, valJson);
+        int update = jdbcTemplate.update(saveSQL.getFirst(), saveSQL.getSecond());
+        return update > 0;
     }
 
-    protected abstract String getSaveOrUpdateSQL(TKey tKey, String valJson);
+    protected abstract Pair<String, BeanPropertySqlParameterSource> getSaveOrUpdateSQL(TKey tKey, String valJson);
 
-    protected abstract String getDeleteSQL(TKey tKey);
+    protected abstract Pair<String, BeanPropertySqlParameterSource> getDeleteSQL(TKey tKey);
 
-    protected abstract String getValSQL(TKey tKey);
+    protected abstract Pair<String, BeanPropertySqlParameterSource> getValSQL(TKey tKey);
 
 }
