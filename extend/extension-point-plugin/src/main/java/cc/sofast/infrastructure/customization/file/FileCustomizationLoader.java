@@ -62,13 +62,15 @@ public class FileCustomizationLoader extends PersistentCustomizationLoader {
         for (; ; ) {
             // read to EOF which may read more or less than initialSize (eg: file
             // is truncated while we are reading)
-            while ((n = source.read(buf, nread, capacity - nread)) > 0)
+            while ((n = source.read(buf, nread, capacity - nread)) > 0) {
                 nread += n;
+            }
 
             // if last call to source.read() returned -1, we are done
             // otherwise, try to read one more byte; if that failed we're done too
-            if (n < 0 || (n = source.read()) < 0)
+            if (n < 0 || (n = source.read()) < 0) {
                 break;
+            }
 
             // one more byte was read; need to allocate a larger buffer
             capacity = Math.max(1, BUFFER_SIZE);

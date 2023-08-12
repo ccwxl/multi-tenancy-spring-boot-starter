@@ -16,9 +16,7 @@ import java.sql.SQLException;
  * jdbc 持久化方式
  */
 public abstract class JdbcCustomizationLoader extends PersistentCustomizationLoader {
-
     private JdbcTemplate jdbcTemplate;
-
     @Override
     public String val(TKey key) {
         Pair<String, BeanPropertySqlParameterSource> valSQL = getValSQL(key);

@@ -67,8 +67,10 @@ public class Groovy implements Script {
         try {
             // 构建binding入参
             Binding binding = buildBinding(param);
-            // 创建脚本（可以看到这里就是基于Class去new一个script对象）
             Assert.notNull(scriptEntry.getClazz(), "execute script failed, clazz can not be null.");
+            // 创建脚本（可以看到这里就是基于Class去new一个script对象）,TODO 这个对象是否可以缓存
+            // see https://blog.csdn.net/feiqinbushizheng/article/details/108582634
+            //https://mp.weixin.qq.com/s?__biz=MzU0OTE4MzYzMw==&mid=2247517100&idx=5&sn=bbb34817a6fbf16cc6e9897da335033d&chksm=fbb10a52ccc6834483ef06c38c5bce3e902082bbb8f82b5c8906d51b91a3f48dc4edecff10b5&scene=27
             groovy.lang.Script script = InvokerHelper.createScript(scriptEntry.getClazz(), binding);
             script.setBinding(binding);
             // 执行脚本

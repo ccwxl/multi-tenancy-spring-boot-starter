@@ -12,10 +12,8 @@
 - 租户业务执行器: 设置和释放当前线程的租户上下文
 - 动态注册租户: 基于`Redis Stream`在运行期注册租户
 - baseline jdk17. support Graalvm.
-
-```
---add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.invoke=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
-```
+- `postgresql` 中表DDL对比和模版`Schema`，方便新增租户和查看其差异
+- 扩展cola组件，抽象租户定制化配置类`TenantCustomization`，租户动态脚本引擎`.TenantDynamicScriptExecutor`满足定制化业务逻辑的开发。
 
 ## Redis
 
@@ -41,4 +39,10 @@
 
 ```
 implementation 'cc.sofast.infrastructure:multi-tenancy-datasource-spring-boot-starter:{lastverion}'
+```
+
+- jdk17 启动时需要的参数
+
+```
+--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.invoke=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.desktop/java.awt.font=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED
 ```
