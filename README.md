@@ -4,7 +4,7 @@
 
 ## 特性
 
-- 数据库隔离模型: 基于`Postgresql`的 `schema` 级别隔离
+- 数据库隔离模型: 基于`Postgresql`的 `schema`，`database` 级别隔离
 - Redis隔离模型: 为每个key增加租户前缀
 - 租户标识解析: 从`Cookie`, `Header`, `Domain`,`URL Path`,`Env`中解析租户标识
 - 租户标识传播: 支持`Seata`, `Feign`, `RestTemplate`
