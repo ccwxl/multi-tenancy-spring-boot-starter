@@ -1,6 +1,6 @@
 ## 简介
 
-`multi-tenancy-datasource-spring-boot-starter` 是一个基于`springboot`的多租户的开发神器.包含了多租户的多种业务封装。
+`multi-tenancy-datasource-spring-boot-starter` 是一个基于`springboot`的多租户的开发神器. 包含了多租户场景下业务封装和组件抽象。
 
 ## 特性
 
