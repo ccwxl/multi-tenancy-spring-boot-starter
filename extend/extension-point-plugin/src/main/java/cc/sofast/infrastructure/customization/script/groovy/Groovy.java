@@ -1,7 +1,9 @@
-package cc.sofast.infrastructure.customization.script;
+package cc.sofast.infrastructure.customization.script.groovy;
 
 import cc.sofast.infrastructure.customization.ApplicationContextHelper;
 import cc.sofast.infrastructure.customization.Cons;
+import cc.sofast.infrastructure.customization.script.EngineExecutorResult;
+import cc.sofast.infrastructure.customization.script.Script;
 import com.google.auto.service.AutoService;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
@@ -23,7 +25,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @AutoService(Script.class)
 public class Groovy implements Script {
 
-    private final Map<GroovyKey, GroovyScriptEntry> SCRIPT_CACHE = new ConcurrentHashMap<>();
+    /**
+     * TODO 脚本更新
+     */
+    private static final Map<GroovyKey, GroovyScriptEntry> SCRIPT_CACHE = new ConcurrentHashMap<>();
+
+    /**
+     * TODO 脚本更新MD5会变。之前的类缓存则无法清理。会变成垃圾。久而久之可能会引起内存问题？LRU缓存？
+     */
+    private static final Map<String, Md5Script> SCRIPT_INSTANCE_CACHE = new ConcurrentHashMap<>();
 
     private static final Logger log = LoggerFactory.getLogger(Groovy.class);
 
@@ -68,13 +78,21 @@ public class Groovy implements Script {
             // 构建binding入参
             Binding binding = buildBinding(param);
             Assert.notNull(scriptEntry.getClazz(), "execute script failed, clazz can not be null.");
-            // 创建脚本（可以看到这里就是基于Class去new一个script对象）,TODO 这个对象是否可以缓存
+            // 创建脚本（可以看到这里就是基于Class去new一个script对象
             // see https://blog.csdn.net/feiqinbushizheng/article/details/108582634
-            //https://mp.weixin.qq.com/s?__biz=MzU0OTE4MzYzMw==&mid=2247517100&idx=5&sn=bbb34817a6fbf16cc6e9897da335033d&chksm=fbb10a52ccc6834483ef06c38c5bce3e902082bbb8f82b5c8906d51b91a3f48dc4edecff10b5&scene=27
-            groovy.lang.Script script = InvokerHelper.createScript(scriptEntry.getClazz(), binding);
-            script.setBinding(binding);
-            // 执行脚本
-            result = script.run();
+            String fingerprint = scriptEntry.getFingerprint();
+            Md5Script md5Script = SCRIPT_INSTANCE_CACHE.get(fingerprint);
+            groovy.lang.Script script;
+            if (md5Script != null && fingerprint.equals(md5Script.getMd5())) {
+                script = md5Script.getScript();
+            } else {
+                script = InvokerHelper.createScript(scriptEntry.getClazz(), binding);
+                SCRIPT_INSTANCE_CACHE.put(fingerprint, new Md5Script(fingerprint, script));
+            }
+            synchronized (script) {
+                script.setBinding(binding);
+                result = script.run();
+            }
         } catch (Exception ex) {
             log.error("execute groovy script error, scriptEntry is : {}," +
                     " executeParams is : {}", scriptEntry, param, ex);
@@ -97,4 +115,6 @@ public class Groovy implements Script {
         params.forEach(binding::setProperty);
         return binding;
     }
+
+
 }

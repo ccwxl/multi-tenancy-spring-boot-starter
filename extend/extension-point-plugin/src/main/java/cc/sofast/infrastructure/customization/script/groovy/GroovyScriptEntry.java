@@ -1,4 +1,4 @@
-package cc.sofast.infrastructure.customization.script;
+package cc.sofast.infrastructure.customization.script.groovy;
 
 import org.springframework.util.Assert;
 

@@ -1,9 +1,10 @@
-package cc.sofast.infrastructure.customization.script;
+package cc.sofast.infrastructure.customization.script.aviator;
 
+import cc.sofast.infrastructure.customization.script.EngineExecutorResult;
+import cc.sofast.infrastructure.customization.script.Script;
 import com.google.auto.service.AutoService;
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.Expression;
-import com.googlecode.aviator.script.AviatorScriptEngine;
 
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import java.util.Map;
  */
 @AutoService(Script.class)
 public class Aviator implements Script {
-
 
     @Override
     public String type() {
