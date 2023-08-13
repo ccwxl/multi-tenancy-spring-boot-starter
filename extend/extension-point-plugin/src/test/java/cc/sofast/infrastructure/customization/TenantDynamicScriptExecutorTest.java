@@ -20,7 +20,14 @@ class TenantDynamicScriptExecutorTest {
         TKey tKey = new TKey();
         tKey.setTenant("t");
         tKey.setKey("script");
+        //先预热
+        LongStream.range(0, 10).forEach(idx -> {
+            Map<String, Object> param = new HashMap<>();
+            param.put("idx", idx);
+            tds.eval(tKey, param);
+        });
 
+        //压测
         CountDownLatch countDownLatch = new CountDownLatch(100);
         Long startTime = System.currentTimeMillis();
         LongStream.range(0, 100).forEach(idx -> new Thread(() -> {
