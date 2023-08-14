@@ -33,7 +33,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-data-redis'
     testImplementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    testImplementation group: 'com.googlecode.aviator', name: 'aviator', version: '5.3.3'
+//    testImplementation group: 'com.googlecode.aviator', name: 'aviator', version: '5.3.3'
     testImplementation group: 'org.apache.groovy', name: 'groovy', version: '4.0.13'
 }
 

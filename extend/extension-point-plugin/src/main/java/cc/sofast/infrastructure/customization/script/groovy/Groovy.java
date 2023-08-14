@@ -25,6 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @AutoService(Script.class)
 public class Groovy implements Script {
 
+    private static final Logger log = LoggerFactory.getLogger(Groovy.class);
+
     /**
      * TODO 脚本更新
      */
@@ -34,8 +36,6 @@ public class Groovy implements Script {
      * TODO 脚本更新MD5会变。之前的类缓存则无法清理。会变成垃圾。久而久之可能会引起内存问题？LRU缓存？
      */
     private static final Map<String, Md5Script> SCRIPT_INSTANCE_CACHE = new ConcurrentHashMap<>();
-
-    private static final Logger log = LoggerFactory.getLogger(Groovy.class);
 
     @Override
     public String type() {
@@ -78,7 +78,6 @@ public class Groovy implements Script {
             // 构建binding入参
             Binding binding = buildBinding(param);
             Assert.notNull(scriptEntry.getClazz(), "execute script failed, clazz can not be null.");
-            // 创建脚本（可以看到这里就是基于Class去new一个script对象
             // see https://blog.csdn.net/feiqinbushizheng/article/details/108582634
             String fingerprint = scriptEntry.getFingerprint();
             Md5Script md5Script = SCRIPT_INSTANCE_CACHE.get(fingerprint);
@@ -90,12 +89,16 @@ public class Groovy implements Script {
                 SCRIPT_INSTANCE_CACHE.put(fingerprint, new Md5Script(fingerprint, script));
             }
             synchronized (script) {
+                //如何共享类的话会有线程安全问题。因为groovy.lang.Script 对象是共享的，缓存的。所以需要加对象锁
                 script.setBinding(binding);
                 result = script.run();
             }
+//            创建脚本（可以看到这里就是基于Class去new一个script对象
+//            script=  InvokerHelper.createScript(scriptEntry.getClazz(), binding);
+//            script.setBinding(binding);
+//            result = script.run();
         } catch (Exception ex) {
-            log.error("execute groovy script error, scriptEntry is : {}," +
-                    " executeParams is : {}", scriptEntry, param, ex);
+            log.error("execute groovy script error, scriptEntry is : {}, executeParams is : {}", scriptEntry, param, ex);
             return EngineExecutorResult.failed(ex);
         }
         return EngineExecutorResult.success(result);
@@ -115,6 +118,4 @@ public class Groovy implements Script {
         params.forEach(binding::setProperty);
         return binding;
     }
-
-
 }

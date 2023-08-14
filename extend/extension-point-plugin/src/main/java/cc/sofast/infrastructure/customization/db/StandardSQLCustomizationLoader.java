@@ -4,6 +4,7 @@ package cc.sofast.infrastructure.customization.db;
 import cc.sofast.infrastructure.customization.TCustomizationModel;
 import cc.sofast.infrastructure.customization.TKey;
 import org.springframework.data.util.Pair;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +16,10 @@ import java.sql.Types;
  * Pair<sql,BeanPropertySqlParameterSource>
  */
 public class StandardSQLCustomizationLoader extends JdbcCustomizationLoader {
+
+    public StandardSQLCustomizationLoader(JdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate);
+    }
 
     @Override
     protected Pair<String, BeanPropertySqlParameterSource> getSaveOrUpdateSQL(TKey tKey, String valJson) {

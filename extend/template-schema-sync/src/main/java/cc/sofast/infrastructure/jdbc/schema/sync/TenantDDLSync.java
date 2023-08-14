@@ -19,8 +19,4 @@ public class TenantDDLSync {
         return false;
     }
 
-    public boolean autoSyncDiff(SchemaInfo source, SchemaInfo target) {
-
-        return false;
-    }
 }

@@ -16,7 +16,13 @@ import java.sql.SQLException;
  * jdbc 持久化方式
  */
 public abstract class JdbcCustomizationLoader extends PersistentCustomizationLoader {
-    private JdbcTemplate jdbcTemplate;
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public JdbcCustomizationLoader(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
     public String val(TKey key) {
         Pair<String, BeanPropertySqlParameterSource> valSQL = getValSQL(key);

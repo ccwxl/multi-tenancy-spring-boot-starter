@@ -1,6 +1,7 @@
 package cc.sofast.infrastructure.customization;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +25,7 @@ public class TenantCustomization {
     public TenantCustomization(CustomizationLoader customizationLoader) {
         this.customizationLoader = customizationLoader;
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-        //TODO 一些通用的配置
+        builder.serializationInclusion(JsonInclude.Include.NON_NULL);
         this.objectMapper = builder.build();
     }
 
@@ -85,7 +86,7 @@ public class TenantCustomization {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return customizationLoader.saveOrUpdate(key,valJson);
+        return customizationLoader.saveOrUpdate(key, valJson);
     }
 
     public boolean remove(TKey key) {

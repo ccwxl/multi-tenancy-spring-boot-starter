@@ -1,2 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-cc.sofast.infrastructure.extension.ExtensionAutoConfiguration
+cc.sofast.infrastructure.extension.ExtensionAutoConfiguration,\
+cc.sofast.infrastructure.customization.TenantDynamicScriptExecutorConfiguration,\
+cc.sofast.infrastructure.customization.TenantCustomizationConfiguration

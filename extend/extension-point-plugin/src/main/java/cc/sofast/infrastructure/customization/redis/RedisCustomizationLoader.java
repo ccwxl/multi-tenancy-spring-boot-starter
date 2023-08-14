@@ -11,7 +11,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  */
 public class RedisCustomizationLoader implements CustomizationLoader {
 
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
+
+    public RedisCustomizationLoader(StringRedisTemplate stringRedisTemplate) {
+        this.stringRedisTemplate = stringRedisTemplate;
+    }
 
     @Override
     public String val(TKey key) {

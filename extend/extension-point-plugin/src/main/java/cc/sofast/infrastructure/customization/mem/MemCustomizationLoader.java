@@ -3,6 +3,7 @@ package cc.sofast.infrastructure.customization.mem;
 
 import cc.sofast.infrastructure.customization.TKey;
 import cc.sofast.infrastructure.customization.redis.RedisCustomizationLoader;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,8 +15,13 @@ public class MemCustomizationLoader extends RedisCustomizationLoader {
 
     private static final Map<TKey, String> KV = new ConcurrentHashMap<>();
 
+    public MemCustomizationLoader(StringRedisTemplate stringRedisTemplate) {
+        super(stringRedisTemplate);
+    }
+
     @Override
     public String val(TKey key) {
+
         return KV.computeIfAbsent(key, this::superVal);
     }
 

@@ -3,7 +3,7 @@ package cc.sofast.infrastructure.customization;
 
 /**
  * @author wxl
- * 配置项存储
+ * 配置项存储模型
  */
 public class TCustomizationModel {
 

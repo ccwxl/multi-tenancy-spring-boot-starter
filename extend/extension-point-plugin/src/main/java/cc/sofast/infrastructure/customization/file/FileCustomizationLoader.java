@@ -34,13 +34,13 @@ public class FileCustomizationLoader extends PersistentCustomizationLoader {
 
     @Override
     public boolean remove(TKey key) {
-        //什么也不做
+        //Do nothing
         return true;
     }
 
     @Override
     public boolean saveOrUpdate(TKey key, String valJson) {
-        //什么也不做
+        //Do nothing
         return true;
     }
 

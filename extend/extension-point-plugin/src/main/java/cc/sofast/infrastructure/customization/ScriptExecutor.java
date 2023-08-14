@@ -22,6 +22,7 @@ public class ScriptExecutor {
 
     public void init() {
         //扫描脚本执行器。进行注册。使用SPI的方式
+        //TODO 有可能会报类未发现异常。
         ServiceLoader<Script> load = ServiceLoader.load(Script.class);
         for (Script script : load) {
             String type = script.type();
