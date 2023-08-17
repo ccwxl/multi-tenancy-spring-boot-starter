@@ -1,7 +1,6 @@
 package cc.sofast.infrastructure.customization;
 
 
-import cc.sofast.infrastructure.customization.db.JdbcCustomizationLoader;
 import cc.sofast.infrastructure.customization.mem.MemCustomizationLoader;
 import org.springframework.util.StringUtils;
 

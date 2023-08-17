@@ -13,6 +13,11 @@ public class TKey {
 
     private String key;
 
+    public TKey(String tenant, String key) {
+        this.tenant = tenant;
+        this.key = key;
+    }
+
     public String getTenant() {
         return tenant;
     }

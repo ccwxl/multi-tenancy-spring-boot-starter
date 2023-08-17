@@ -27,9 +27,6 @@ public class Groovy implements Script {
 
     private static final Logger log = LoggerFactory.getLogger(Groovy.class);
 
-    /**
-     * TODO 脚本更新
-     */
     private static final Map<GroovyKey, GroovyScriptEntry> SCRIPT_CACHE = new ConcurrentHashMap<>();
 
     /**
@@ -93,7 +90,7 @@ public class Groovy implements Script {
                 script.setBinding(binding);
                 result = script.run();
             }
-//            创建脚本（可以看到这里就是基于Class去new一个script对象
+//            创建脚本（可以看到这里就是基于Class去new一个script对象，想要无锁就要每次都要构造对象。
 //            script=  InvokerHelper.createScript(scriptEntry.getClazz(), binding);
 //            script.setBinding(binding);
 //            result = script.run();

@@ -1,3 +1,4 @@
 cc.sofast.infrastructure.extension.ExtensionAutoConfiguration
 cc.sofast.infrastructure.customization.TenantDynamicScriptExecutorConfiguration
 cc.sofast.infrastructure.customization.TenantCustomizationConfiguration
+cc.sofast.infrastructure.customization.notify.TenantCustomizationEventConfiguration

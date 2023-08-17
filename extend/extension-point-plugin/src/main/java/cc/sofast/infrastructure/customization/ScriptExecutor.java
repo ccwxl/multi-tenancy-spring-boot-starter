@@ -22,7 +22,6 @@ public class ScriptExecutor {
 
     public void init() {
         //扫描脚本执行器。进行注册。使用SPI的方式
-        //TODO 有可能会报类未发现异常。
         ServiceLoader<Script> load = ServiceLoader.load(Script.class);
         for (Script script : load) {
             String type = script.type();
@@ -33,6 +32,9 @@ public class ScriptExecutor {
     public EngineExecutorResult eval(DynamicScriptModel dsm, Map<String, Object> param) {
         String type = dsm.getType();
         Script script = scripts.get(type);
+        if (script == null) {
+            throw new IllegalArgumentException("unknown script type: " + type + " support aviator or groovy");
+        }
         return script.eval(dsm.getScript(), param);
     }
 }

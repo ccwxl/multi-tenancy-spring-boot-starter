@@ -18,13 +18,15 @@ public class TenantCustomizationConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public TenantCustomization tenantCustomization(ComposeCustomizationLoader customizationLoader) {
+
         return new TenantCustomization(customizationLoader);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public ComposeCustomizationLoader customizationLoader(MemCustomizationLoader memCustomizationLoader, PersistentCustomizationLoader persistentCustomizationLoader) {
-        return new ComposeCustomizationLoader(memCustomizationLoader, persistentCustomizationLoader);
+
+       return new ComposeCustomizationLoader(memCustomizationLoader, persistentCustomizationLoader);
     }
 
     @Bean
