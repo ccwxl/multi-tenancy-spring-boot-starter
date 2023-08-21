@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author wxl
  * groovy 脚本动态执行
+ * TODO cache 过期的策略
  */
 @AutoService(Script.class)
 public class Groovy implements Script {
@@ -29,9 +30,6 @@ public class Groovy implements Script {
 
     private static final Map<GroovyKey, GroovyScriptEntry> SCRIPT_CACHE = new ConcurrentHashMap<>();
 
-    /**
-     * TODO 脚本更新MD5会变。之前的类缓存则无法清理。会变成垃圾。久而久之可能会引起内存问题？LRU缓存？
-     */
     private static final Map<String, Md5Script> SCRIPT_INSTANCE_CACHE = new ConcurrentHashMap<>();
 
     @Override

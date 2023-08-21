@@ -13,6 +13,8 @@ public class RedisCustomizationLoader implements CustomizationLoader {
 
     private final StringRedisTemplate stringRedisTemplate;
 
+    private static final String KEY_FORMAT = "script_%s_%s";
+
     public RedisCustomizationLoader(StringRedisTemplate stringRedisTemplate) {
         this.stringRedisTemplate = stringRedisTemplate;
     }
@@ -25,7 +27,7 @@ public class RedisCustomizationLoader implements CustomizationLoader {
 
     private static String getRedisKey(TKey key) {
 
-        return String.format("script_%s_%s", key.getTenant(), key.getKey());
+        return String.format(KEY_FORMAT, key.getTenant(), key.getKey());
     }
 
     @Override

@@ -1,5 +1,5 @@
 {
   "type": "groovy",
   "describe": "this is groovy test.",
-  "script": "String helloWorld(idx) {\n    return \"hello world: \" + idx\n}\n\nhelloWorld(idx)"
+  "script": "package cc.sofast.infrastructure.customization.script.groovy\n\nimport org.springframework.context.ApplicationContext\n\nclass GroovyDemo extends ScriptTemplate {\n\n    @Override\n    Object toRun(ApplicationContext applicationContext, String tenant, String key, Binding binding) {\n        println(\"this is template. \" + getBinding().getVariable(\"idx\"))\n        return \"ok\"\n    }\n}"
 }

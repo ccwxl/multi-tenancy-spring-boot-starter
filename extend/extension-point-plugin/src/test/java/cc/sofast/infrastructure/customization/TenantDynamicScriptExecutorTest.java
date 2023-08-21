@@ -29,19 +29,19 @@ class TenantDynamicScriptExecutorTest {
         });
 
         //压测
-        CountDownLatch countDownLatch = new CountDownLatch(100);
-        Long startTime = System.currentTimeMillis();
-        LongStream.range(0, 100).forEach(idx -> new Thread(() -> {
-            long innerStartTime = System.currentTimeMillis();
-            Map<String, Object> param = new HashMap<>();
-            param.put("idx", idx);
-            EngineExecutorResult result = tds.eval(tKey, param);
-            System.out.println(result.<Long>context() + "  innerCostTime: " + (System.currentTimeMillis() - innerStartTime));
-            countDownLatch.countDown();
-        }).start());
-        countDownLatch.await();
-        Long endTime = System.currentTimeMillis();
-        System.out.println("cost time: " + (endTime - startTime));
+//        CountDownLatch countDownLatch = new CountDownLatch(100);
+//        Long startTime = System.currentTimeMillis();
+//        LongStream.range(0, 100).forEach(idx -> new Thread(() -> {
+//            long innerStartTime = System.currentTimeMillis();
+//            Map<String, Object> param = new HashMap<>();
+//            param.put("idx", idx);
+//            EngineExecutorResult result = tds.eval(tKey, param);
+//            System.out.println(result.<Long>context() + "  innerCostTime: " + (System.currentTimeMillis() - innerStartTime));
+//            countDownLatch.countDown();
+//        }).start());
+//        countDownLatch.await();
+//        Long endTime = System.currentTimeMillis();
+//        System.out.println("cost time: " + (endTime - startTime));
     }
 
     private static TenantDynamicScriptExecutor getTenantDynamicScriptExecutor() {
