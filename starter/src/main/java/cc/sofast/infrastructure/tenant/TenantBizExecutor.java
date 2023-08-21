@@ -15,6 +15,7 @@ import java.util.function.Function;
  * </p>
  */
 public class TenantBizExecutor {
+
     private final ApplicationContext applicationContext;
 
     public TenantBizExecutor(ApplicationContext applicationContext) {

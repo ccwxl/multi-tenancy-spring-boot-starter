@@ -30,7 +30,7 @@ public class TenantRedisConfiguration {
     @Bean("noneTenantRedisTemplate")
     public RedisTemplate<String, Object> noneTenantRedisTemplate(RedisConnectionFactory redisConnectionFactory,
                                                                  ObjectProvider<RedisTemplateCustomizer> customizers) {
-        RedisTemplate<String, Object> redisTemplate = redisTemplate(redisConnectionFactory, customizers);
+        RedisTemplate<String, Object> redisTemplate = new TenantRedisConfiguration().redisTemplate(redisConnectionFactory, customizers);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
@@ -70,7 +70,7 @@ public class TenantRedisConfiguration {
      */
     @Bean("noneTenantStringRedisTemplate")
     public StringRedisTemplate noneTenantStringRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        StringRedisTemplate stringRedisTemplate = stringRedisTemplate(redisConnectionFactory);
+        StringRedisTemplate stringRedisTemplate = new TenantRedisConfiguration().stringRedisTemplate(redisConnectionFactory);
         stringRedisTemplate.setKeySerializer(RedisSerializer.string());
         return stringRedisTemplate;
     }

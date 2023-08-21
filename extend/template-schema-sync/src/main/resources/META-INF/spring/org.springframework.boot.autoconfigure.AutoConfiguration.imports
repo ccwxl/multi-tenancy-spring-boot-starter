@@ -1,1 +1,1 @@
-cc.sofast.infrastructure.jdbc.schema.SchemaAutoconfiguration
+cc.sofast.infrastructure.jdbc.schema.TenantSchemaAutoconfiguration

@@ -6,6 +6,7 @@ spring:
         web-type: header
       ignore-path:
         - /tenant/**
+        - /actuator/**
     enabled: true
     primary: def
     datasource:
@@ -37,6 +38,8 @@ spring:
         username: t3
         password: t3
         tenant-ds-type: share
+        tenants:
+          - t3
         hikari:
           maximum-pool-size: 10
   data:

@@ -1,8 +1,11 @@
 package cc.sofast.infrastructure.customization;
 
 import cc.sofast.infrastructure.customization.file.FileCustomizationLoader;
+import cc.sofast.infrastructure.customization.notify.TenantCustomizationEventChanger;
 import cc.sofast.infrastructure.customization.script.EngineExecutorResult;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +16,7 @@ class TenantDynamicScriptExecutorTest {
 
     @Test
     void eval() throws InterruptedException {
-        TenantDynamicScriptExecutor tds = new TenantDynamicScriptExecutor();
-        tds.setTenantCustomization(new TenantCustomization(new FileCustomizationLoader()));
-        tds.setScriptExecutor(new ScriptExecutor());
+        TenantDynamicScriptExecutor tds = getTenantDynamicScriptExecutor();
 
         TKey tKey = new TKey();
         tKey.setTenant("t");
@@ -41,5 +42,16 @@ class TenantDynamicScriptExecutorTest {
         countDownLatch.await();
         Long endTime = System.currentTimeMillis();
         System.out.println("cost time: " + (endTime - startTime));
+    }
+
+    private static TenantDynamicScriptExecutor getTenantDynamicScriptExecutor() {
+        LettuceConnectionFactory lcf = new LettuceConnectionFactory();
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate(lcf);
+        TenantCustomizationEventChanger tenantCustomizationEventChanger =
+                new TenantCustomizationEventChanger(stringRedisTemplate, new CustomizationProperties());
+        TenantDynamicScriptExecutor tds = new TenantDynamicScriptExecutor();
+        tds.setTenantCustomization(new TenantCustomization(new FileCustomizationLoader(), tenantCustomizationEventChanger));
+        tds.setScriptExecutor(new ScriptExecutor());
+        return tds;
     }
 }

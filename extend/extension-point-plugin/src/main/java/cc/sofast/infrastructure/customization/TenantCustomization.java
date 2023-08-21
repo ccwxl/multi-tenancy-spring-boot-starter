@@ -1,6 +1,7 @@
 package cc.sofast.infrastructure.customization;
 
 
+import cc.sofast.infrastructure.customization.notify.TenantCustomizationEventChanger;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
@@ -22,11 +23,14 @@ public class TenantCustomization {
 
     private final ObjectMapper objectMapper;
 
-    public TenantCustomization(CustomizationLoader customizationLoader) {
+    private final TenantCustomizationEventChanger tenantCustomizationEventChanger;
+
+    public TenantCustomization(CustomizationLoader customizationLoader, TenantCustomizationEventChanger tenantCustomizationEventChanger) {
         this.customizationLoader = customizationLoader;
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.serializationInclusion(JsonInclude.Include.NON_NULL);
         this.objectMapper = builder.build();
+        this.tenantCustomizationEventChanger = tenantCustomizationEventChanger;
     }
 
     public <T> List<T> getList(TKey key, Class<T> type) {
@@ -86,11 +90,14 @@ public class TenantCustomization {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return customizationLoader.saveOrUpdate(key, valJson);
+        boolean saveOrUpdate = customizationLoader.saveOrUpdate(key, valJson);
+        tenantCustomizationEventChanger.updateOrDelete(key.getTenant(), key.getKey());
+        return saveOrUpdate;
     }
 
     public boolean remove(TKey key) {
-
-        return customizationLoader.remove(key);
+        boolean remove = customizationLoader.remove(key);
+        tenantCustomizationEventChanger.updateOrDelete(key.getTenant(), key.getKey());
+        return remove;
     }
 }

@@ -27,7 +27,7 @@ public class HeaderTenantResolver extends AbstractHttpRequestTenantResolver {
         String id = properties.getWeb().getId();
         String tenant = request.getHeader(id);
         if (!StringUtils.hasLength(tenant)) {
-            throw new TenantNotFoundException("Tenant not resolver in header " + id + " value is null");
+            throw new TenantNotFoundException("Tenant not resolver in header " + id + " value is null current URL: " + request.getRequestURL());
         }
         return tenant;
     }

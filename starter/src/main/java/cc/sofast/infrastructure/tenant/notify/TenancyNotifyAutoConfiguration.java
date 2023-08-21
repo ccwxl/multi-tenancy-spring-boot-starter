@@ -37,7 +37,7 @@ public class TenancyNotifyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TenantEventListenerErrorHandler streamListenerErrorHandler() {
+    public TenantEventListenerErrorHandler tenantEventListenerErrorHandler() {
 
         return new TenantEventListenerErrorHandler();
     }

@@ -2,6 +2,7 @@ package cc.sofast.infrastructure.customization.notify;
 
 import cc.sofast.infrastructure.customization.ComposeCustomizationLoader;
 import cc.sofast.infrastructure.customization.CustomizationProperties;
+import cc.sofast.infrastructure.customization.mem.MemCustomizationLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,10 +33,10 @@ public class TenantCustomizationEventConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TenantCustomizationEventListener customizationEventListener(ComposeCustomizationLoader customizationLoader,
+    public TenantCustomizationEventListener customizationEventListener(MemCustomizationLoader memCustomizationLoader,
                                                                        CustomizationProperties customizationProperties) {
 
-        return new TenantCustomizationEventListener(customizationLoader, customizationProperties);
+        return new TenantCustomizationEventListener(memCustomizationLoader, customizationProperties);
     }
 
     @Bean
@@ -57,7 +58,7 @@ public class TenantCustomizationEventConfiguration {
     @ConditionalOnMissingBean
     public StreamMessageListenerContainer<String, MapRecord<String, String, String>> tenantCustomizationEventListenerContainer(
             RedisConnectionFactory redisConnectionFactory, CustomizationProperties customizationProperties,
-            TenantCustomizationEventListener customizationEventListener, ErrorHandler errorHandler) {
+            TenantCustomizationEventListener customizationEventListener, ErrorHandler customizationErrorHandler) {
         //监听容器
         StreamMessageListenerContainer<String, MapRecord<String, String, String>> tenantEventListenerContainer =
                 StreamMessageListenerContainer.create(redisConnectionFactory,
@@ -74,7 +75,7 @@ public class TenantCustomizationEventConfiguration {
                         //出现链接异常等.不要取消订阅. 一旦取消订阅如果网络恢复就会丢失数据
                         .cancelOnError(throwable -> false)
                         //异常处理器
-                        .errorHandler(errorHandler)
+                        .errorHandler(customizationErrorHandler)
                         .build();
 
         //不加group使用的 XREAD 命令.实现的是pub/sub模型.

@@ -16,4 +16,9 @@ public enum DsType {
      * 共享
      */
     SHARE,
+
+    /**
+     * 共享,RLS 行级别隔离
+     */
+    RLS,
 }

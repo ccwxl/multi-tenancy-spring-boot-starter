@@ -16,6 +16,9 @@ bootJar {
 
 dependencies {
     implementation(project(":starter"))
+    implementation(project(":extend:extension-point-plugin"))
+    implementation(project(":extend:template-schema-sync"))
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -25,7 +28,6 @@ dependencies {
     implementation 'com.baomidou:mybatis-plus-boot-starter'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

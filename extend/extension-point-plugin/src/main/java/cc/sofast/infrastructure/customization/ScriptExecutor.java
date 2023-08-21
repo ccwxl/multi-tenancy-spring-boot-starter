@@ -33,7 +33,7 @@ public class ScriptExecutor {
         String type = dsm.getType();
         Script script = scripts.get(type);
         if (script == null) {
-            throw new IllegalArgumentException("unknown script type: " + type + " support aviator or groovy");
+            throw new IllegalArgumentException("unknown script type: " + type + " support aviator,groovy");
         }
         return script.eval(dsm.getScript(), param);
     }

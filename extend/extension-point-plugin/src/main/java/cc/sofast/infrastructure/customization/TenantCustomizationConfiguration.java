@@ -2,11 +2,13 @@ package cc.sofast.infrastructure.customization;
 
 import cc.sofast.infrastructure.customization.db.StandardSQLCustomizationLoader;
 import cc.sofast.infrastructure.customization.mem.MemCustomizationLoader;
+import cc.sofast.infrastructure.customization.notify.TenantCustomizationEventChanger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 /**
  * @author xielong.wang
@@ -17,16 +19,16 @@ public class TenantCustomizationConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TenantCustomization tenantCustomization(ComposeCustomizationLoader customizationLoader) {
+    public TenantCustomization tenantCustomization(ComposeCustomizationLoader customizationLoader, TenantCustomizationEventChanger tenantCustomizationEventChanger) {
 
-        return new TenantCustomization(customizationLoader);
+        return new TenantCustomization(customizationLoader, tenantCustomizationEventChanger);
     }
 
     @Bean
     @ConditionalOnMissingBean
     public ComposeCustomizationLoader customizationLoader(MemCustomizationLoader memCustomizationLoader, PersistentCustomizationLoader persistentCustomizationLoader) {
 
-       return new ComposeCustomizationLoader(memCustomizationLoader, persistentCustomizationLoader);
+        return new ComposeCustomizationLoader(memCustomizationLoader, persistentCustomizationLoader);
     }
 
     @Bean
@@ -38,9 +40,9 @@ public class TenantCustomizationConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public PersistentCustomizationLoader persistentCustomizationLoader(JdbcTemplate jdbcTemplate) {
+    public PersistentCustomizationLoader persistentCustomizationLoader(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
 
-        return new StandardSQLCustomizationLoader(jdbcTemplate);
+        return new StandardSQLCustomizationLoader(namedParameterJdbcTemplate);
     }
 
 }

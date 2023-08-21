@@ -13,6 +13,9 @@ public class TKey {
 
     private String key;
 
+    public TKey() {
+    }
+
     public TKey(String tenant, String key) {
         this.tenant = tenant;
         this.key = key;
@@ -51,7 +54,8 @@ public class TKey {
         return Objects.hash(tenant, key);
     }
 
-    public static class TKeyBuilder {
+    public static TKey of(String tenant, String key) {
 
+        return new TKey(tenant, key);
     }
 }

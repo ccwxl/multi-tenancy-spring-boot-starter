@@ -42,8 +42,7 @@ public class ComposeCustomizationLoader implements CustomizationLoader {
 
     @Override
     public boolean saveOrUpdate(TKey key, String valJson) {
-        memCustomizationLoader.saveOrUpdate(key, valJson);
-        persistentCustomizationLoader.saveOrUpdate(key, valJson);
-        return false;
+
+        return memCustomizationLoader.saveOrUpdate(key, valJson) && persistentCustomizationLoader.saveOrUpdate(key, valJson);
     }
 }
