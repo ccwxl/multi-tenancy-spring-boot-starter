@@ -1,6 +1,10 @@
 package cc.sofast.example.rest;
 
+import cc.sofast.example.bean.Account;
+import cc.sofast.example.extension.AccountExtPt;
+import cc.sofast.infrastructure.extension.BizScenario;
 import cc.sofast.infrastructure.extension.TenantExtensionExecutor;
+import cc.sofast.infrastructure.tenant.TenantContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +21,15 @@ public class ExtensionController {
     TenantExtensionExecutor tenantExtensionExecutor;
 
     @GetMapping
-    public String extension() {
+    public Account extension() {
+        Account account = new Account();
+        account.setAddress("济南");
+        account.setAge(30L);
+        account.setNickname("wxl");
 
-        return "";
+        BizScenario scenario = BizScenario.valueOf(AccountExtPt.BIZ_ID, TenantContextHolder.peek(), AccountExtPt.SCENARIO);
+
+        return tenantExtensionExecutor.execute(AccountExtPt.class, scenario,
+                accountExtPt -> accountExtPt.accountCalculate(account));
     }
 }

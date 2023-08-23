@@ -8,7 +8,7 @@ import cc.sofast.infrastructure.jdbc.schema.exec.Exec;
  */
 public class TenantDDLSync {
 
-    private Exec exec;
+    private final Exec exec;
 
     public TenantDDLSync(Exec exec) {
         this.exec = exec;

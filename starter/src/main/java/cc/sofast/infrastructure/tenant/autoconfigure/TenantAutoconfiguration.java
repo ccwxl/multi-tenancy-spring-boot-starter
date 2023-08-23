@@ -1,5 +1,7 @@
 package cc.sofast.infrastructure.tenant.autoconfigure;
 
+import cc.sofast.infrastructure.tenant.TenantBizExecutor;
+import cc.sofast.infrastructure.tenant.TenantHelper;
 import cc.sofast.infrastructure.tenant.datasource.DataSourceCreatorAutoconfiguration;
 import cc.sofast.infrastructure.tenant.datasource.TenantDataSourceProperties;
 import cc.sofast.infrastructure.tenant.datasource.TenantDataSourcePropertiesCustomizer;
@@ -19,6 +21,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.CollectionUtils;
@@ -63,6 +66,19 @@ public class TenantAutoconfiguration implements InitializingBean {
         return new PropertiesTenantDataSourceProvider(tenantDataSourceProperties);
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public TenantBizExecutor tenantBizExecutor(ApplicationContext context) {
+
+        return new TenantBizExecutor(context);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public TenantHelper tenantHelper(DataSource dataSource) {
+
+        return new TenantHelper((TenantDynamicRoutingDataSource) dataSource);
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {

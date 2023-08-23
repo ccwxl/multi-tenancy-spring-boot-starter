@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionLikeType;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,9 @@ public class TenantCustomization {
 
     public <T> List<T> getList(TKey key, Class<T> type) {
         String val = customizationLoader.val(key);
+        if (!StringUtils.hasText(val)) {
+            return null;
+        }
         CollectionLikeType collectionLikeType = objectMapper.getTypeFactory().constructCollectionLikeType(List.class, type);
         try {
             return objectMapper.readValue(val, collectionLikeType);
@@ -45,6 +49,9 @@ public class TenantCustomization {
 
     public <T> Map<String, T> getMap(TKey key, Class<T> valType) {
         String val = customizationLoader.val(key);
+        if (!StringUtils.hasText(val)) {
+            return null;
+        }
         MapLikeType mapLikeType = objectMapper.getTypeFactory().constructMapLikeType(Map.class, String.class, valType);
         try {
             return objectMapper.readValue(val, mapLikeType);
@@ -55,6 +62,9 @@ public class TenantCustomization {
 
     public <K, V> Map<K, V> getMap(TKey key, Class<K> keyClass, Class<V> valType) {
         String val = customizationLoader.val(key);
+        if (!StringUtils.hasText(val)) {
+            return null;
+        }
         MapLikeType mapLikeType = objectMapper.getTypeFactory().constructMapLikeType(Map.class, keyClass, valType);
         try {
             return objectMapper.readValue(val, mapLikeType);
@@ -65,6 +75,9 @@ public class TenantCustomization {
 
     public <T> T getVal(TKey key, Class<T> type) {
         String val = customizationLoader.val(key);
+        if (!StringUtils.hasText(val)) {
+            return null;
+        }
         JavaType javaType = objectMapper.getTypeFactory().constructType(type);
         try {
             return objectMapper.readValue(val, javaType);
@@ -75,6 +88,9 @@ public class TenantCustomization {
 
     public String getVal(TKey key) {
         String val = customizationLoader.val(key);
+        if (!StringUtils.hasText(val)) {
+            return null;
+        }
         JavaType javaType = objectMapper.getTypeFactory().constructType(String.class);
         try {
             return objectMapper.readValue(val, javaType);

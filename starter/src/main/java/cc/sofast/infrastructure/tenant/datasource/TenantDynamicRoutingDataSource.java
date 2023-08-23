@@ -189,4 +189,8 @@ public class TenantDynamicRoutingDataSource extends AbstractDataSource
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return (iface.isInstance(this) || determineDataSource().isWrapperFor(iface));
     }
+
+    public Map<String, DataSource> getDataSourceMap() {
+        return dataSourceMap;
+    }
 }

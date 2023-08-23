@@ -21,6 +21,10 @@ public class TenantDynamicScriptExecutor {
         param.put("tenant", key.getTenant());
         param.put("key", key.getKey());
         DynamicScriptModel dsm = tenantCustomization.getVal(key, DynamicScriptModel.class);
+        if (dsm == null) {
+            //说明当前的租户没有定制化脚本要执行，直接返回
+            return EngineExecutorResult.success(Cons.SUCCESS);
+        }
         return scriptExecutor.eval(dsm, param);
     }
 
