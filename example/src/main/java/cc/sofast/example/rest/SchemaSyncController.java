@@ -28,6 +28,6 @@ public class SchemaSyncController {
         for (String tenant : tenantList) {
             tenantBizExecutor.execute(tenant, SqlSync.class, s -> { s.exec(sql); });
         }
-        return "";
+        return "ok";
     }
 }
