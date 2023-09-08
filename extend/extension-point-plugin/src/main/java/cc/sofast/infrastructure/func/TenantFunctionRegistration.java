@@ -51,6 +51,7 @@ public class TenantFunctionRegistration<T> implements BeanNameAware {
      * want to add a name or set or names to the existing set of names use
      * {@link #names(Collection)} or {@link #name(String)} or {@link #names(String...)}
      * operations.
+     *
      * @param names - bean names
      */
     public void setNames(Set<String> names) {
@@ -87,13 +88,11 @@ public class TenantFunctionRegistration<T> implements BeanNameAware {
                             && outputType.isAssignableFrom(FunctionTypeUtils.getRawType(FunctionTypeUtils.getOutputType(type)))),
                     "Discovered function type does not match provided function type. Discovered: "
                             + discoveredFunctionType + "; Provided: " + type);
-        }
-        else if (inputType == null && outputType != Object.class) {
+        } else if (inputType == null && outputType != Object.class) {
             Assert.isTrue(outputType.isAssignableFrom(FunctionTypeUtils.getRawType(FunctionTypeUtils.getOutputType(type))),
                     "Discovered function type does not match provided function type. Discovered: "
                             + discoveredFunctionType + "; Provided: " + type);
-        }
-        else if (outputType == null && inputType != Object.class) {
+        } else if (outputType == null && inputType != Object.class) {
             Assert.isTrue(inputType.isAssignableFrom(FunctionTypeUtils.getRawType(FunctionTypeUtils.getInputType(type))),
                     "Discovered function type does not match provided function type. Discovered: "
                             + discoveredFunctionType + "; Provided: " + type);
@@ -107,6 +106,7 @@ public class TenantFunctionRegistration<T> implements BeanNameAware {
      * Allows to override the target of this registration with a new target that typically
      * wraps the original target. This typically happens when original target is wrapped
      * into its {@link flux} counterpart (e.g., Function into FluxFunction)
+     *
      * @param target new target
      * @return this registration with new target
      */
@@ -132,9 +132,9 @@ public class TenantFunctionRegistration<T> implements BeanNameAware {
      * Transforms (wraps) function identified by the 'target' to its {@code Flux}
      * equivalent unless it already is. For example, {@code Function<String, String>}
      * becomes {@code Function<Flux<String>, Flux<String>>}
-     * @param <S> the expected target type of the function (e.g., FluxFunction)
-     * @return {@code FunctionRegistration} with the appropriately wrapped target.
      *
+     * @param <S> the expected target type of the function (e.g., FluxFunction)
+     * @return {@code FunctionRegistration} with the approp¬ΩΩiately wrapped target.
      */
     @Override
     public void setBeanName(String name) {

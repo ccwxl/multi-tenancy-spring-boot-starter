@@ -35,18 +35,17 @@ public class TenantBizFuncExecutor implements ApplicationContextAware {
 
     private GenericApplicationContext applicationContext;
 
-    private static final Map<TenantBizFun, String> TENANT_MAPPING = new ConcurrentHashMap<>();
+    private static final Map<Fun, String> TENANT_MAPPING = new ConcurrentHashMap<>();
 
     private final Set<TenantFunctionRegistration<?>> functionRegistrations = new CopyOnWriteArraySet<>();
 
     private final Map<String, TenantFunctionInvocationWrapper> wrappedFunctionDefinitions = new HashMap<>();
 
-    public <T> T lookup(TenantBizFun tenantBizFun) {
+    public <T> T lookup(Fun fun) {
         //获取所有标注TenantFun的注解的bean
-        String funName = TENANT_MAPPING.get(tenantBizFun);
+        String funName = TENANT_MAPPING.get(fun);
         if (!StringUtils.hasText(funName)) {
-            //TODO if funName real is null？
-            Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(TenantFun.class);
+            Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(TenantBizFun.class);
             for (Map.Entry<String, Object> b : beansWithAnnotation.entrySet()) {
                 BeanDefinition bd = applicationContext.getBeanDefinition(b.getKey());
                 MergedAnnotations mergedAnnotations = null;
@@ -67,13 +66,13 @@ public class TenantBizFuncExecutor implements ApplicationContextAware {
                     continue;
                 }
 
-                MergedAnnotation<TenantFun> tenantFunMergedAnnotation = mergedAnnotations.get(TenantFun.class);
+                MergedAnnotation<TenantBizFun> tenantFunMergedAnnotation = mergedAnnotations.get(TenantBizFun.class);
                 String tenant = tenantFunMergedAnnotation.getString("tenant");
                 String biz = tenantFunMergedAnnotation.getString("biz");
-                TENANT_MAPPING.put(TenantBizFun.of(tenant, biz), b.getKey());
+                TENANT_MAPPING.put(Fun.of(tenant, biz), b.getKey());
 
             }
-            funName = TENANT_MAPPING.get(tenantBizFun);
+            funName = TENANT_MAPPING.get(fun);
         }
         if (!StringUtils.hasText(funName)) {
             throw new IllegalArgumentException("function isnull");

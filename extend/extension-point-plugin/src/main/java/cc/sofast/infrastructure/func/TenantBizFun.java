@@ -1,60 +1,17 @@
 package cc.sofast.infrastructure.func;
 
-
-import java.util.Objects;
+import java.lang.annotation.*;
 
 /**
  * @author wxl
  */
-public class TenantBizFun {
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface TenantBizFun {
 
-    private String tenant;
+    String tenant();
 
-    private String biz;
+    String biz();
 
-    public TenantBizFun() {
-    }
-
-    public TenantBizFun(String tenant, String biz) {
-        this.tenant = tenant;
-        this.biz = biz;
-    }
-
-    public String getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
-    }
-
-    public String getBiz() {
-        return biz;
-    }
-
-    public void setBiz(String biz) {
-        this.biz = biz;
-    }
-
-    public static TenantBizFun of(String tenant, String biz) {
-
-        return new TenantBizFun(tenant, biz);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        TenantBizFun tenantBizFun = (TenantBizFun) o;
-        return Objects.equals(tenant, tenantBizFun.tenant) && Objects.equals(biz, tenantBizFun.biz);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(tenant, biz);
-    }
 }

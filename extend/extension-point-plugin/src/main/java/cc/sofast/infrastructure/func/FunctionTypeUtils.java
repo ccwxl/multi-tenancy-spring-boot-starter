@@ -1,6 +1,5 @@
 package cc.sofast.infrastructure.func;
 
-
 import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;

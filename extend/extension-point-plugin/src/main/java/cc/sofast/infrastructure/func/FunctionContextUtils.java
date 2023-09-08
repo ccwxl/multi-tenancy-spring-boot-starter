@@ -1,7 +1,5 @@
 package cc.sofast.infrastructure.func;
 
-
-
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
