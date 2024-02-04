@@ -7,13 +7,14 @@
 - 数据库隔离模型: 基于`Postgresql`的 `schema`，`database` 级别隔离
 - Redis隔离模型: 为每个key增加租户前缀
 - 租户标识解析: 从`Cookie`, `Header`, `Domain`,`URL Path`,`Env`中解析租户标识
-- 租户标识传播: 支持`Seata`, `Feign`, `RestTemplate`
+- 租户标识传递: 支持`Seata`, `Feign`, `RestTemplate`
 - 数据源: 多个租户复用数据库`Connection`减少资源消耗,也可使用独立数据源
-- 租户业务执行器: 设置和释放当前线程的租户上下文
 - 动态注册租户: 基于`Redis Stream`在运行期注册租户
-- baseline jdk17. support Graalvm.
 - `postgresql` 中表DDL对比和模版`Schema`，方便新增租户和查看其差异
-- 扩展cola组件，抽象租户定制化配置类`TenantCustomization`，租户动态脚本引擎`.TenantDynamicScriptExecutor`满足定制化业务逻辑的开发。
+- 租户业务执行器: 设置和释放当前线程的租户上下文,执行定制业务功能. 满足定制化业务处理场景
+- 扩展cola组件，使用扩展点的方式扩展租户业务. 满足定制化业务处理场景
+- 抽象租户定制化配置类`TenantCustomization`，租户动态脚本引擎`.TenantDynamicScriptExecutor`满足定制化业务逻辑的开发。
+- 动态定义接口组件，满足定制化报表类,简单CRUD类,定制化数据列表类业务
 
 ## Redis
 
