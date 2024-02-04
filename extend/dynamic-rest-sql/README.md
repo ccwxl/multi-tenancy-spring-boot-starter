@@ -6,6 +6,10 @@
 
 - 注册接口，在线写SQL为租户扩展。
 - 数据库字段下划线转驼峰的映射
+- cache 是否加入到redis cache中,
+    - cache key
+    - cache 更新
+    - cache 失效
 - Get
     - 分页查询
     - 列表查询
