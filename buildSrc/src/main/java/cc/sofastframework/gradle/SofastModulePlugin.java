@@ -53,7 +53,6 @@ public class SofastModulePlugin implements Plugin<Project> {
         project.getRepositories().maven(mavenArtifactRepository -> mavenArtifactRepository.setUrl("https://repo.spring.io/release"));
         project.getRepositories().maven(mavenArtifactRepository -> mavenArtifactRepository.setUrl("https://repo.spring.io/milestone"));
 
-        //配置开发阶段的依赖
         configureDevelopmentStageConfiguration(project);
     }
 
